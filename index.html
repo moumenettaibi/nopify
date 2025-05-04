@@ -695,9 +695,12 @@
 
         /** Calculates the difference in days between two dates (UTC). */
         function dateDiffInDays(date1, date2) {
+            console.log("dateDiffInDays called with:", date1, date2);
             const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
             const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
-            return Math.floor((utc2 - utc1) / MS_PER_DAY);
+            const diff = Math.floor((utc2 - utc1) / MS_PER_DAY);
+            console.log("dateDiffInDays result:", diff);
+            return diff;
         }
 
         /** Determines the *highest* current badge achieved based on days. */
@@ -740,8 +743,7 @@
 
                 // Create HTML structure for the badge item
                 listItem.innerHTML = `
-                    <i class="item-icon fas ${badge.icon}"></i>
-                    <div class="list-item-details">
+                    <i class="item-icon fas ${badge.icon}"></i> <div class="list-item-details">
                         <div class="list-item-name">${badge.name}</div>
                         <div class="list-item-days">${badge.threshold}+ Days</div>
                     </div>
@@ -955,9 +957,11 @@
 
         /** Updates the main streak count and current badge display. */
         function updateMainDisplay() {
-            // console.log("Updating Main Display...");
+            console.log("Updating Main Display...");
             const today = new Date();
             today.setHours(0, 0, 0, 0);
+            console.log("Today's date (normalized):", today.toISOString());
+
             let previousStreakDays = currentStreakDays; // Store previous streak days
             let previousBadgeThreshold = lastAchievedStandardBadgeThreshold; // Store previous badge threshold
 
@@ -967,6 +971,8 @@
             if (streakStartDate) {
                 const normalizedStartDate = new Date(streakStartDate);
                 normalizedStartDate.setHours(0, 0, 0, 0);
+                 console.log("Streak Start Date (normalized):", normalizedStartDate.toISOString());
+
 
                 if (normalizedStartDate > today) {
                     streakCountEl.textContent = '0';
@@ -974,11 +980,11 @@
                     badgeIconEl.className = 'main-badge-icon fas fa-exclamation-triangle text-red-500'; // Use main-badge-icon class
                     streakMessageEl.textContent = 'Start date cannot be in the future.';
                     currentStreakDays = -1; // Indicate invalid state
-                     // console.log("Invalid start date detected.");
+                     console.log("Invalid start date detected.");
                 } else {
                     currentStreakDays = dateDiffInDays(normalizedStartDate, today);
                     currentBadge = getCurrentBadge(currentStreakDays); // Get the highest achieved badge
-                     // console.log(`Streak Start Date: ${streakStartDate.toISOString().split('T')[0]}, Current Streak Days: ${currentStreakDays}`);
+                     console.log(`Streak Start Date: ${streakStartDate.toISOString().split('T')[0]}, Current Streak Days: ${currentStreakDays}`);
 
                      // Check for new standard badge achievement
                      if (currentBadge.threshold > previousBadgeThreshold) {
@@ -994,7 +1000,7 @@
                  currentStreakDays = 0;
                  lastAchievedStandardBadgeThreshold = 0; // Reset if no start date
                  saveState(); // Save the reset lastAchievedStandardBadgeThreshold
-                 // console.log("No start date set.");
+                 console.log("No start date set.");
             }
 
             // Update main streak count
@@ -1019,7 +1025,7 @@
             // After updating the main display, check for newly achieved goals and update lists
             checkAndAwardGoalBadges(); // This will call renderGoalsList and renderGoalAchievements
             populateStandardBadgesList(); // Update standard badges list
-             // console.log("Finished Updating Main Display.");
+             console.log("Finished Updating Main Display.");
         }
 
 
@@ -1309,16 +1315,17 @@
 
         // Listen for changes on the start date input
         startDateInput.addEventListener('change', (event) => {
-             // console.log("Start Date input changed.");
+             console.log("Start Date input changed.");
             const selectedDate = event.target.value;
             if (selectedDate) {
+                 console.log("Selected date string from input:", selectedDate);
                 // Create a Date object from the input value (parsed as local time)
                 streakStartDate = new Date(selectedDate);
-                 // console.log("New streak start date selected:", streakStartDate);
+                 console.log("New streak start date object:", streakStartDate);
             } else {
                 // If input is cleared, set streakStartDate to null
                 streakStartDate = null;
-                 // console.log("Streak start date cleared.");
+                 console.log("Streak start date cleared.");
             }
             saveState(); // Save the new state
             updateMainDisplay(); // Update main streak count and badge (this calls checkAndAwardGoalBadges, renderGoalsList, renderGoalAchievements, and populateStandardBadgesList)
