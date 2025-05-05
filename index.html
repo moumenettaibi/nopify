@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoFap Streak Tracker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Nopify</title> <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+    <link rel="shortcut icon" href="https://api.cloudinary.com/v1_1/pplx/image/download?timestamp=1746370578&public_id=user_uploads%2F1428752%2FJdaGRckSlfmIJxu%2FSCR-20250504-nenx&format=jpg&signature=4cd38a510128955ae7b4be28a1ffbb21ccecb304&api_key=168798331147639" type="image/x-icon">
+	<style>
         /* Custom Styles */
         body {
             font-family: 'Inter', sans-serif;
@@ -486,19 +486,22 @@
 
     </style>
 </head>
-<body class="flex flex-col items-center justify-start min-h-screen p-4 bg-gray-100"> <div class="main-container"> <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">NoFap Streak</h1>
+<body class="flex flex-col items-center justify-start min-h-screen p-4 bg-gray-100">
+
+    <div class="main-container">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Nopify</h1>
 
         <div class="mb-6 text-center">
             <label for="startDate" class="block text-sm font-medium text-gray-700 mb-2">Start Date:</label>
-            <input type="date" id="startDate" name="startDate" class="mx-auto block"> </div>
-
+            <input type="date" id="startDate" name="startDate" class="mx-auto block">
+        </div>
 
         <div class="text-center mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
              <div class="flex items-center justify-center space-x-4 mb-2">
                  <span id="streakCount" class="text-6xl font-bold text-orange-500">0</span>
                  <i class="fas fa-fire text-5xl text-orange-400"></i>
             </div>
-            <p class="text-lg text-gray-700">day streak!</p>
+            <p class="text-lg text-gray-700">Days Streak!</p>
             <div id="badgeDisplay" class="mt-3 flex items-center justify-center text-gray-600">
                 <i id="badgeIcon" class="main-badge-icon fas fa-question-circle"></i>
                 <span id="badgeName" class="font-medium">Set start date</span>
@@ -523,7 +526,7 @@
             </button>
          </div>
 
-        <div id="notificationPrompt" class="hidden">
+        <div id="notificationPrompt" class="hidden mt-6">
             <p>Enable browser notifications to get alerts when you achieve milestones!</p>
             <button id="requestNotificationPermissionBtn">Enable Notifications</button>
         </div>
@@ -553,12 +556,14 @@
                     </tr>
                 </thead>
                 <tbody id="calendarBody" class="text-center">
-                    </tbody>
+                    <!-- Calendar days will be generated here -->
+                </tbody>
             </table>
         </div>
 
     </div>
 
+    <!-- My Goals Modal -->
     <div id="myGoalsModal" class="modal-overlay">
         <div class="modal-content">
             <button id="closeGoalsModalBtn" aria-label="Close modal" class="modal-close-btn">
@@ -568,17 +573,22 @@
 
             <div class="modal-goal-section">
                 <label for="newGoalDays">Add New Goal:</label>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-2 mb-2"> <input type="number" id="newGoalDays" name="newGoalDays" min="1" placeholder="Days" class="block w-full sm:w-auto max-w-[100px] text-center"> <input type="text" id="newGoalName" name="newGoalName" placeholder="Optional Name" class="block w-full sm:flex-grow"> </div>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-2 mb-2">
+                    <input type="number" id="newGoalDays" name="newGoalDays" min="1" placeholder="Days" class="block w-full sm:w-auto max-w-[100px] text-center">
+                    <input type="text" id="newGoalName" name="newGoalName" placeholder="Optional Name" class="block w-full sm:flex-grow">
+                </div>
                 <button id="addGoalBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold w-full sm:w-auto"> Add Goal
                 </button>
             </div>
 
             <div id="goalsListContainer">
                 <p class="text-center text-gray-500 text-sm italic p-4">No goals set yet. Add one above!</p>
+                <!-- Goal items will be rendered here -->
             </div>
         </div>
     </div>
 
+    <!-- My Goal Achievements Modal -->
     <div id="myGoalAchievementsModal" class="modal-overlay">
         <div class="modal-content">
             <button id="closeGoalAchievementsModalBtn" aria-label="Close modal" class="modal-close-btn">
@@ -587,11 +597,12 @@
             <h2 class="text-xl font-semibold text-center text-gray-800 mb-4">My Goal Achievements</h2>
             <div id="goalAchievementsListContainer">
                  <p class="text-center text-gray-500 text-sm italic p-4">No goals achieved yet.</p>
-                </div>
+                 <!-- Achieved goal items will be rendered here -->
+            </div>
         </div>
     </div>
 
-
+    <!-- View All Standard Badges Modal -->
      <div id="viewStandardBadgesModal" class="modal-overlay">
         <div class="modal-content">
             <button id="closeStandardBadgesModalBtn" aria-label="Close modal" class="modal-close-btn">
@@ -599,13 +610,16 @@
             </button>
             <h2 class="text-xl font-semibold text-center text-gray-800 mb-4">All Standard Badges</h2>
             <div id="standardBadgesListContainer">
-                 </div>
+                 <!-- Standard badge items will be rendered here -->
+            </div>
         </div>
     </div>
 
+    <!-- Celebration Modal -->
     <div id="celebrationModal" class="modal-overlay">
         <div id="celebrationContent">
-            <i id="celebrationIcon" class="fas fa-star"></i> <div id="celebrationMessage">Congratulations!</div>
+            <i id="celebrationIcon" class="fas fa-star"></i>
+            <div id="celebrationMessage">Congratulations!</div>
             <div id="celebrationDetails">You achieved a milestone!</div>
         </div>
     </div>
@@ -625,39 +639,36 @@
         const badgeNameEl = document.getElementById('badgeName');
 
         // Buttons to open modals
-        const myGoalsBtn = document.getElementById('myGoalsBtn'); // Button for Goals modal
-        const myGoalAchievementsBtn = document.getElementById('myGoalAchievementsBtn'); // Button for Goal Achievements modal
-        const viewStandardBadgesBtn = document.getElementById('viewStandardBadgesBtn'); // Button for Standard Badges modal
+        const myGoalsBtn = document.getElementById('myGoalsBtn');
+        const myGoalAchievementsBtn = document.getElementById('myGoalAchievementsBtn');
+        const viewStandardBadgesBtn = document.getElementById('viewStandardBadgesBtn');
 
         // Notification Permission Prompt Elements
         const notificationPrompt = document.getElementById('notificationPrompt');
         const requestNotificationPermissionBtn = document.getElementById('requestNotificationPermissionBtn');
 
-
         // Modals
-        const myGoalsModal = document.getElementById('myGoalsModal'); // Goals modal
-        const myGoalAchievementsModal = document.getElementById('myGoalAchievementsModal'); // Goal Achievements modal
-        const viewStandardBadgesModal = document.getElementById('viewStandardBadgesModal'); // Standard Badges modal
-        const celebrationModal = document.getElementById('celebrationModal'); // Celebration modal
+        const myGoalsModal = document.getElementById('myGoalsModal');
+        const myGoalAchievementsModal = document.getElementById('myGoalAchievementsModal');
+        const viewStandardBadgesModal = document.getElementById('viewStandardBadgesModal');
+        const celebrationModal = document.getElementById('celebrationModal');
 
-
-        // Close buttons for modals (using querySelector to find within the modal)
+        // Close buttons for modals
         const closeGoalsModalBtn = myGoalsModal.querySelector('.modal-close-btn');
         const closeGoalAchievementsModalBtn = myGoalAchievementsModal.querySelector('.modal-close-btn');
         const closeStandardBadgesModalBtn = viewStandardBadgesModal.querySelector('.modal-close-btn');
 
-
-        // Elements within My Goals Modal (Goal Setting and List)
-        const newGoalDaysInput = document.getElementById('newGoalDays'); // Input for new goal days
-        const newGoalNameInput = document.getElementById('newGoalName'); // Input for new goal name
-        const addGoalBtn = document.getElementById('addGoalBtn'); // Button to add new goal
-        const goalsListContainer = document.getElementById('goalsListContainer'); // Container for the list of goals
+        // Elements within My Goals Modal
+        const newGoalDaysInput = document.getElementById('newGoalDays');
+        const newGoalNameInput = document.getElementById('newGoalName');
+        const addGoalBtn = document.getElementById('addGoalBtn');
+        const goalsListContainer = document.getElementById('goalsListContainer');
 
         // Elements within My Goal Achievements Modal
-        const goalAchievementsListContainer = document.getElementById('goalAchievementsListContainer'); // Container for achieved goal items
+        const goalAchievementsListContainer = document.getElementById('goalAchievementsListContainer');
 
         // Elements within View All Standard Badges Modal
-        const standardBadgesListContainer = document.getElementById('standardBadgesListContainer'); // Container for standard badges
+        const standardBadgesListContainer = document.getElementById('standardBadgesListContainer');
 
         // Elements within Celebration Modal
         const celebrationIconEl = document.getElementById('celebrationIcon');
@@ -666,20 +677,20 @@
 
 
         // --- State ---
-        let currentDisplayedDate = new Date();
+        let currentDisplayedDate = new Date(); // For calendar view
         let streakStartDate = null;
-        let currentStreakDays = 0; // Store current streak days
-        let userGoals = []; // Array to store multiple goals
-        let lastAchievedStandardBadgeThreshold = 0; // Store the threshold of the last achieved standard badge
-
+        let currentStreakDays = 0;
+        let userGoals = [];
+        let lastAchievedStandardBadgeThreshold = 0;
+        let dailyUpdateTimeoutId = null; // Store the timeout ID for the daily update
 
         // --- Constants ---
         const MS_PER_DAY = 1000 * 60 * 60 * 24;
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-        // --- Badge Definitions ---
-        // Ordered from highest threshold to lowest for getBadge logic
+        // --- Badge Definitions --- (Sorted by threshold for simplicity in getCurrentBadge)
         const badges = [
-             { name: 'Clown', threshold: 0, icon: 'fa-face-sad-tear' }, // Base badge for 0 days
+             { name: 'Clown', threshold: 0, icon: 'fa-face-sad-tear' },
              { name: 'Noob', threshold: 1, icon: 'fa-baby' },
              { name: 'Novice', threshold: 3, icon: 'fa-seedling' },
              { name: 'Average', threshold: 7, icon: 'fa-medal' },
@@ -689,67 +700,62 @@
              { name: 'Absolute Chad', threshold: 60, icon: 'fa-gem' },
              { name: 'Giga Chad', threshold: 120, icon: 'fa-crown' },
              { name: 'Absolute Giga Chad', threshold: 365, icon: 'fa-meteor' }
-        ];
+        ].sort((a, b) => b.threshold - a.threshold); // Sort descending by threshold
 
         // --- Functions ---
 
         /** Calculates the difference in days between two dates (UTC). */
         function dateDiffInDays(date1, date2) {
-            console.log("dateDiffInDays called with:", date1, date2);
+            // console.log("dateDiffInDays called with:", date1, date2);
             const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
             const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
             const diff = Math.floor((utc2 - utc1) / MS_PER_DAY);
-            console.log("dateDiffInDays result:", diff);
+            // console.log("dateDiffInDays result:", diff);
             return diff;
         }
 
         /** Determines the *highest* current badge achieved based on days. */
         function getCurrentBadge(days) {
-             // Iterate from highest threshold downwards
-             for (let i = badges.length - 1; i >= 0; i--) {
-                 if (days >= badges[i].threshold) {
-                     return badges[i];
+             // Assumes badges array is sorted descending by threshold
+             for (const badge of badges) {
+                 if (days >= badge.threshold) {
+                     return badge;
                  }
              }
-             // Should always return at least 'Clown'
-             return badges[0];
+             // Should theoretically not be reached if Clown (threshold 0) is present
+             return badges[badges.length - 1]; // Fallback to lowest threshold badge
         }
 
         /** Populates the standard badges list within the View All Standard Badges modal. */
         function populateStandardBadgesList() {
             standardBadgesListContainer.innerHTML = ''; // Clear existing list
-             // console.log("Populating Standard Badges List...");
+            // console.log("Populating Standard Badges List...");
 
+            // Use the globally defined badges array, sort ascending for display
+            const sortedBadgesForDisplay = [...badges].sort((a, b) => a.threshold - b.threshold);
 
-            // Add standard badges, sorted by threshold
-            const sortedBadges = [...badges].sort((a, b) => a.threshold - b.threshold);
-
-            if (sortedBadges.length === 0) {
+            if (sortedBadgesForDisplay.length === 0) {
                  standardBadgesListContainer.innerHTML = '<p class="text-center text-gray-500 text-sm italic p-4">No standard badges defined.</p>';
-                 // console.log("No standard badges defined.");
                  return;
             }
 
-
-            sortedBadges.forEach(badge => {
+            sortedBadgesForDisplay.forEach(badge => {
                 const listItem = document.createElement('div');
                 listItem.className = 'list-item'; // Use generic list-item class
-
-                const isAchieved = currentStreakDays >= badge.threshold; // Check if achieved
+                const isAchieved = currentStreakDays >= badge.threshold && currentStreakDays >= 0; // Also check streak is valid
 
                 if (isAchieved) {
-                    listItem.classList.add('achieved'); // Add highlight class
+                    listItem.classList.add('achieved');
                 }
 
-                // Create HTML structure for the badge item
                 listItem.innerHTML = `
-                    <i class="item-icon fas ${badge.icon}"></i> <div class="list-item-details">
+                    <i class="item-icon fas ${badge.icon}"></i>
+                    <div class="list-item-details">
                         <div class="list-item-name">${badge.name}</div>
                         <div class="list-item-days">${badge.threshold}+ Days</div>
                     </div>
                 `;
                 standardBadgesListContainer.appendChild(listItem);
-                // console.log(`Added standard badge: ${badge.name} (Achieved: ${isAchieved})`);
             });
              // console.log("Finished populating Standard Badges List.");
         }
@@ -759,44 +765,44 @@
              goalsListContainer.innerHTML = ''; // Clear existing list
              // console.log("Rendering Goals List...");
 
-
             if (userGoals.length === 0) {
                  goalsListContainer.innerHTML = '<p class="text-center text-gray-500 text-sm italic p-4">No goals set yet. Add one above!</p>';
-                 // console.log("No user goals set.");
                  return;
             }
 
+             // Sort goals by days for consistent display order
+             userGoals.sort((a, b) => a.days - b.days);
+
             userGoals.forEach((goal, index) => {
                 const goalItem = document.createElement('div');
-                goalItem.className = 'goal-list-item'; // Use specific goal-list-item class
-                const isGoalAchieved = currentStreakDays >= goal.days;
+                goalItem.className = 'goal-list-item';
+                const isGoalAchieved = currentStreakDays >= goal.days && currentStreakDays >= 0;
 
                  if (isGoalAchieved) {
                      goalItem.classList.add('achieved');
                  }
 
-                const percentage = Math.min((currentStreakDays / goal.days) * 100, 100); // Cap at 100%
+                const percentage = isGoalAchieved ? 100 : (currentStreakDays > 0 ? Math.min((currentStreakDays / goal.days) * 100, 100) : 0);
 
                 goalItem.innerHTML = `
                     <div class="goal-list-item-header">
                          <i class="item-icon fas fa-bullseye"></i>
                          <div class="goal-list-item-details">
-                             <div class="goal-list-item-name">${goal.name ? goal.name : `Goal ${index + 1}`} (${goal.days} Days)</div>
-                             <div class="goal-list-item-progress-text">${isGoalAchieved ? 'Achieved!' : `Progress: ${currentStreakDays} / ${goal.days} days`}</div>
+                             <div class="goal-list-item-name">${goal.name ? goal.name : `Goal ${goal.days} Days`} (${goal.days} Days)</div>
+                             <div class="goal-list-item-progress-text">${isGoalAchieved ? 'Achieved!' : `Progress: ${Math.max(0, currentStreakDays)} / ${goal.days} days`}</div>
                          </div>
                          <button class="remove-goal-btn" data-index="${index}" aria-label="Remove goal">
                              <i class="fas fa-times-circle"></i>
                          </button>
                     </div>
-                    <div class="progress-bar-container">
+                    <div class="progress-bar-container ${isGoalAchieved ? 'achieved' : ''}">
                         <div class="progress-bar-fill" style="width: ${percentage}%;"></div>
                     </div>
                 `;
                 goalsListContainer.appendChild(goalItem);
-                 // console.log(`Rendered goal: ${goal.name} (${goal.days} days, Achieved: ${isGoalAchieved})`);
             });
 
-             // Add event listeners to remove buttons after rendering
+             // Add event listeners to remove buttons AFTER rendering
              goalsListContainer.querySelectorAll('.remove-goal-btn').forEach(button => {
                  button.addEventListener('click', handleRemoveGoal);
              });
@@ -808,23 +814,23 @@
             goalAchievementsListContainer.innerHTML = ''; // Clear existing list
             // console.log("Rendering Goal Achievements...");
 
+            // Filter achieved goals from the *current* state of userGoals
             const achievedGoals = userGoals.filter(goal => goal.isAchieved);
-            // console.log("Achieved Goals found:", achievedGoals);
 
             if (achievedGoals.length === 0) {
                  goalAchievementsListContainer.innerHTML = '<p class="text-center text-gray-500 text-sm italic p-4">No goals achieved yet.</p>';
-                 // console.log("No achieved goals, displaying message.");
                  return;
             }
 
-            achievedGoals.forEach((goal, index) => {
-                 // console.log(`Rendering achieved goal: ${goal.name} (${goal.days} days)`);
-                 const achievementItem = document.createElement('div');
-                 // Use list-item and a specific goal-achievement-item class
-                 achievementItem.className = 'list-item goal-achievement-item achieved';
+            // Sort achieved goals by days
+            achievedGoals.sort((a, b) => a.days - b.days);
 
+            achievedGoals.forEach(goal => {
+                 const achievementItem = document.createElement('div');
+                 achievementItem.className = 'list-item goal-achievement-item achieved'; // Always achieved style
                  achievementItem.innerHTML = `
-                     <i class="item-icon fas fa-award"></i> <div class="list-item-details">
+                     <i class="item-icon fas fa-award"></i>
+                     <div class="list-item-details">
                          <div class="list-item-name">Achieved: ${goal.name ? goal.name : `Goal ${goal.days} Days`}</div>
                          <div class="list-item-days">Reached at ${goal.days} days</div>
                      </div>
@@ -838,7 +844,7 @@
         function showCelebration(message, details, iconClass = 'fa-star') {
             celebrationMessageEl.textContent = message;
             celebrationDetailsEl.textContent = details;
-            celebrationIconEl.className = `fas ${iconClass}`; // Set the icon class
+            celebrationIconEl.className = `fas ${iconClass} text-4xl mb-4`; // Apply classes directly
 
             celebrationModal.classList.add('active'); // Show the modal
 
@@ -849,106 +855,45 @@
         }
 
         /** Sends a browser notification if permission is granted. */
-        function sendNotification(title, body, icon = '') {
-             // Check if the browser supports notifications and if permission is granted
+        function sendNotification(title, body, icon = 'https://api.cloudinary.com/v1_1/pplx/image/download?timestamp=1746370578&public_id=user_uploads%2F1428752%2FJdaGRckSlfmIJxu%2FSCR-20250504-nenx&format=jpg&signature=4cd38a510128955ae7b4be28a1ffbb21ccecb304&api_key=168798331147639') { // Default to app icon
             if ('Notification' in window && Notification.permission === 'granted') {
-                new Notification(title, {
-                    body: body,
-                    icon: icon // Use the provided icon or a default
-                    // Add other options like vibration, sound, etc. if desired
-                });
-                 // console.log("Browser notification sent:", title, body);
+                new Notification(title, { body: body, icon: icon });
+                // console.log("Browser notification sent:", title);
             } else {
-                 // console.log("Browser notification not sent: Permission not granted or not supported.");
+                // console.log("Browser notification not sent (permission: " + Notification.permission + ")");
             }
         }
 
-
-        /** Handles adding a new goal. */
-        function handleAddGoal() {
-            // console.log("Add Goal button clicked.");
-            const days = parseInt(newGoalDaysInput.value, 10);
-            const name = newGoalNameInput.value.trim();
-
-            if (isNaN(days) || days <= 0) {
-                alert('Please enter a valid number of days for your goal.');
-                 // console.warn("Invalid goal days entered.");
-                return;
-            }
-
-            // Check if a goal with the same number of days already exists
-            const existingGoal = userGoals.find(goal => goal.days === days);
-            if (existingGoal) {
-                 alert(`You already have a goal for ${days} days.`);
-                 // console.warn(`Goal for ${days} days already exists.`);
-                 return;
-            }
-
-
-            const newGoal = {
-                days: days,
-                name: name, // Save the optional name
-                isAchieved: false // Add achievement status, initially false
-            };
-
-            userGoals.push(newGoal); // Add the new goal to the array
-            userGoals.sort((a, b) => a.days - b.days); // Keep goals sorted by days
-            saveState(); // Save the updated state
-            renderGoalsList(); // Re-render the list of goals in the Goals modal
-            // No need to update goal achievements or standard badges here immediately
-            // checkAndAwardGoalBadges will be called on next streak update/load
-            // populateStandardBadgesList is called when its modal is opened
-
-            // console.log("New goal added:", newGoal);
-
-            // Clear the input fields
-            newGoalDaysInput.value = '';
-            newGoalNameInput.value = '';
-        }
-
-        /** Handles removing a goal from the list. */
-        function handleRemoveGoal(event) {
-             // console.log("Remove Goal button clicked.");
-            // Find the index from the data attribute on the button's parent
-            const indexToRemove = parseInt(event.target.closest('.remove-goal-btn').dataset.index, 10);
-
-            // Use the index to remove the goal from the array
-            if (!isNaN(indexToRemove) && indexToRemove >= 0 && indexToRemove < userGoals.length) {
-                 const removedGoal = userGoals.splice(indexToRemove, 1)[0]; // Remove goal from array
-                 saveState(); // Save updated state
-                 renderGoalsList(); // Re-render the goals list
-                 renderGoalAchievements(); // Update goal achievements list if a goal was removed
-                 // console.log("Goal removed:", removedGoal);
-            } else {
-                 // console.warn("Attempted to remove goal with invalid index:", indexToRemove);
-            }
-        }
 
         /** Checks user goals against the current streak and updates their achievement status. */
         function checkAndAwardGoalBadges() {
             // console.log("Checking and Awarding Goal Badges...");
             let stateChanged = false;
+            let newlyAchievedGoal = null; // Track if a goal was *just* achieved
+
             userGoals.forEach(goal => {
-                if (!goal.isAchieved && currentStreakDays >= goal.days) {
+                if (!goal.isAchieved && currentStreakDays >= goal.days && currentStreakDays >= 0) {
                     // console.log(`Goal achieved: ${goal.name} (${goal.days} days)`);
                     goal.isAchieved = true;
                     stateChanged = true;
-                    // Trigger celebration for achieved goal
-                    showCelebration('Goal Achieved!', goal.name ? `${goal.name} (${goal.days} days)` : `${goal.days} Days Goal`, 'fa-award');
-                    // Send browser notification for achieved goal
-                    sendNotification('Milestone Achieved!', `You reached your goal: ${goal.name ? goal.name : `${goal.days} days`}!`, 'https://placehold.co/48x48/34d399/ffffff?text=%F0%9F%8E%89'); // Using a placeholder icon
+                    newlyAchievedGoal = goal; // Store the newly achieved goal
                 }
             });
 
-            // Always re-render goal lists after checking, in case streak changed progress
-            renderGoalsList();
-            renderGoalAchievements();
+            // If a goal was newly achieved, trigger celebration and notification
+            if (newlyAchievedGoal) {
+                 const goalName = newlyAchievedGoal.name ? newlyAchievedGoal.name : `${newlyAchievedGoal.days} Days Goal`;
+                 showCelebration('Goal Achieved!', goalName, 'fa-award');
+                 sendNotification('Milestone Achieved!', `You reached your goal: ${goalName}!`);
+            }
 
+            // Always re-render goal lists after checking to update progress bars and states
+            renderGoalsList();
+            renderGoalAchievements(); // Also update the achievements list modal content
 
             if (stateChanged) {
-                // console.log("State changed, saving.");
-                saveState(); // Save if any goals were newly achieved
-                // Rendering is already done above
+                // console.log("Goal state changed, saving.");
+                saveState(); // Save if any goals were newly marked as achieved
             } else {
                  // console.log("No new goals achieved.");
             }
@@ -957,124 +902,134 @@
 
         /** Updates the main streak count and current badge display. */
         function updateMainDisplay() {
-            console.log("Updating Main Display...");
+            // console.log("Updating Main Display...");
             const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            console.log("Today's date (normalized):", today.toISOString());
+            today.setHours(0, 0, 0, 0); // Normalize today's date
 
-            let previousStreakDays = currentStreakDays; // Store previous streak days
-            let previousBadgeThreshold = lastAchievedStandardBadgeThreshold; // Store previous badge threshold
+            let previousStreakDays = currentStreakDays; // Store previous value
+            let newlyAchievedStandardBadge = null; // Track if a badge was *just* achieved
 
-            currentStreakDays = 0; // Reset streak days calculation
-            let currentBadge = getCurrentBadge(0); // Default badge
+            currentStreakDays = 0; // Reset before recalculation
+            let currentBadge = getCurrentBadge(0); // Default
 
             if (streakStartDate) {
                 const normalizedStartDate = new Date(streakStartDate);
                 normalizedStartDate.setHours(0, 0, 0, 0);
-                 console.log("Streak Start Date (normalized):", normalizedStartDate.toISOString());
-
 
                 if (normalizedStartDate > today) {
-                    streakCountEl.textContent = '0';
-                    badgeNameEl.textContent = 'Invalid Date';
-                    badgeIconEl.className = 'main-badge-icon fas fa-exclamation-triangle text-red-500'; // Use main-badge-icon class
+                    // Start date is in the future - invalid state
+                    currentStreakDays = -1; // Use -1 to indicate invalid
+                    currentBadge = { name: 'Invalid Date', icon: 'fa-exclamation-triangle' };
                     streakMessageEl.textContent = 'Start date cannot be in the future.';
-                    currentStreakDays = -1; // Indicate invalid state
-                     console.log("Invalid start date detected.");
+                     badgeIconEl.style.color = '#ef4444'; // Red for invalid
+                     console.log("Invalid start date (future).");
                 } else {
+                    // Valid start date
                     currentStreakDays = dateDiffInDays(normalizedStartDate, today);
-                    currentBadge = getCurrentBadge(currentStreakDays); // Get the highest achieved badge
-                     console.log(`Streak Start Date: ${streakStartDate.toISOString().split('T')[0]}, Current Streak Days: ${currentStreakDays}`);
+                    currentBadge = getCurrentBadge(currentStreakDays);
+                    streakMessageEl.textContent = ''; // Clear any previous message
+                     badgeIconEl.style.color = '#f97316'; // Default orange for valid
+                     console.log(`Streak calculated: ${currentStreakDays} days.`);
 
-                     // Check for new standard badge achievement
-                     if (currentBadge.threshold > previousBadgeThreshold) {
+                    // Check for new standard badge achievement ONLY if the streak increased
+                    if (currentStreakDays > previousStreakDays && currentBadge.threshold > lastAchievedStandardBadgeThreshold && currentBadge.threshold <= currentStreakDays) {
                          console.log(`New Standard Badge Achieved: ${currentBadge.name} (${currentBadge.threshold} days)`);
-                         showCelebration('New Badge!', currentBadge.name, currentBadge.icon);
-                         sendNotification('New Badge Unlocked!', `You earned the ${currentBadge.name} badge for ${currentBadge.threshold} days!`, 'https://placehold.co/48x48/fb923c/ffffff?text=%F0%9F%8F%86'); // Using a placeholder icon
-                         lastAchievedStandardBadgeThreshold = currentBadge.threshold; // Update the last achieved threshold
-                         saveState(); // Save the updated lastAchievedStandardBadgeThreshold
-                     }
+                         newlyAchievedStandardBadge = currentBadge;
+                         lastAchievedStandardBadgeThreshold = currentBadge.threshold; // Update threshold
+                         saveState(); // Save the new threshold immediately
+                    }
                 }
             } else {
-                 currentBadge = { name: 'Set start date', icon: 'fa-question-circle' };
-                 currentStreakDays = 0;
-                 lastAchievedStandardBadgeThreshold = 0; // Reset if no start date
-                 saveState(); // Save the reset lastAchievedStandardBadgeThreshold
-                 console.log("No start date set.");
+                // No start date set
+                currentStreakDays = 0;
+                currentBadge = { name: 'Set start date', icon: 'fa-question-circle' };
+                streakMessageEl.textContent = '';
+                 badgeIconEl.style.color = '#fb923c'; // Default orange
+                lastAchievedStandardBadgeThreshold = 0; // Reset threshold if no date
+                saveState(); // Save the reset threshold
+                console.log("No start date set.");
             }
 
-            // Update main streak count
-            streakCountEl.textContent = currentStreakDays >= 0 ? currentStreakDays : 0;
+            // Update main streak count display
+            streakCountEl.textContent = Math.max(0, currentStreakDays); // Show 0 for invalid dates too
 
-            // Update main current badge display
+            // Update website title
+            if (currentStreakDays > 0) {
+                document.title = `${currentStreakDays} Days Streak - Nopify`;
+            } else if (currentStreakDays === 0 && streakStartDate !== null) {
+                 document.title = `0 Day Streak - Nopify`;
+            } else {
+                 document.title = `Nopify`; // Default or invalid
+            }
+
+            // Update main badge display
             badgeNameEl.textContent = currentBadge.name;
-            // Ensure main-badge-icon class is always present
-            badgeIconEl.className = `main-badge-icon fas ${currentBadge.icon}`;
-            // Adjust icon color for the main display
-             if (currentStreakDays >= currentBadge.threshold && currentStreakDays >= 0) {
-                 badgeIconEl.style.color = '#f97316'; // Orange-500 for achieved main badge
-             } else if (currentStreakDays < 0) {
-                  badgeIconEl.style.color = '#ef4444'; // Red for invalid
-             }
-              else {
-                  badgeIconEl.style.color = '#fb923c'; // Default orange otherwise
-             }
+            badgeIconEl.className = `main-badge-icon fas ${currentBadge.icon}`; // Apply classes
 
-            streakMessageEl.textContent = ''; // Clear message area for now
+            // After updating streak, check for newly achieved GOALS
+            checkAndAwardGoalBadges(); // This calls its own rendering functions
 
-            // After updating the main display, check for newly achieved goals and update lists
-            checkAndAwardGoalBadges(); // This will call renderGoalsList and renderGoalAchievements
-            populateStandardBadgesList(); // Update standard badges list
-             console.log("Finished Updating Main Display.");
+            // If a standard badge was newly achieved, trigger celebration/notification AFTER goal check
+            if (newlyAchievedStandardBadge) {
+                 showCelebration('New Badge!', newlyAchievedStandardBadge.name, newlyAchievedStandardBadge.icon);
+                 sendNotification('New Badge Unlocked!', `You earned the ${newlyAchievedStandardBadge.name} badge for ${newlyAchievedStandardBadge.threshold} days!`);
+            }
+
+
+            // Re-populate the standard badges list (needed if a new one was achieved)
+            populateStandardBadgesList();
+
+             // console.log("Finished Updating Main Display.");
         }
 
 
-        /** Generates and displays the calendar. */
+        /** Generates and displays the calendar for a given month and year. */
         function generateCalendar(year, month) {
-            calendarBody.innerHTML = '';
+            calendarBody.innerHTML = ''; // Clear previous calendar
             // console.log(`Generating Calendar for ${year}-${month + 1}...`);
             const today = new Date();
-            today.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0); // Normalize today for comparison
 
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             currentMonthYearEl.textContent = `${monthNames[month]} ${year}`;
 
             const firstDayOfMonth = new Date(year, month, 1);
-            let startingDay = firstDayOfMonth.getDay();
-            startingDay = (startingDay === 0) ? 6 : startingDay - 1; // Adjust for Monday start
+            let startingDay = firstDayOfMonth.getDay(); // 0 (Sun) to 6 (Sat)
+            startingDay = (startingDay === 0) ? 6 : startingDay - 1; // Adjust to 0 (Mon) to 6 (Sun)
 
             const daysInMonth = new Date(year, month + 1, 0).getDate();
-
 
             let date = 1;
             let calendarHtml = '';
 
-            for (let i = 0; i < 6; i++) {
-                calendarHtml += '<tr>';
-                let rowHasDates = false;
+            // Calculate the date range for the streak (if applicable)
+            let normalizedStartDate = null;
+            if (streakStartDate) {
+                normalizedStartDate = new Date(streakStartDate);
+                normalizedStartDate.setHours(0, 0, 0, 0);
+            }
 
-                for (let j = 0; j < 7; j++) {
-                    if (i === 0 && j < startingDay) {
-                        // Fill leading empty cells
-                        calendarHtml += '<td><div class="calendar-day other-month"></div></td>';
-                    } else if (date > daysInMonth) {
-                         // Fill trailing empty cells
+            for (let i = 0; i < 6; i++) { // Max 6 rows needed
+                calendarHtml += '<tr>';
+                let rowHasDates = false; // Optimization to stop early if month ends
+
+                for (let j = 0; j < 7; j++) { // 7 days a week (Mon-Sun)
+                    if ((i === 0 && j < startingDay) || date > daysInMonth) {
+                        // Empty cell before month start or after month end
                         calendarHtml += '<td><div class="calendar-day other-month"></div></td>';
                     } else {
+                        // Cell for a valid day in the month
                         rowHasDates = true;
                         const currentDate = new Date(year, month, date);
-                        currentDate.setHours(0, 0, 0, 0);
+                        currentDate.setHours(0, 0, 0, 0); // Normalize for comparison
 
                         let classes = 'calendar-day';
-                        if (streakStartDate) {
-                             const normalizedStartDate = new Date(streakStartDate);
-                             normalizedStartDate.setHours(0, 0, 0, 0);
-                            // Mark days from start date up to today
-                            if (currentDate >= normalizedStartDate && currentDate <= today) {
-                                classes += ' streak-day';
-                            }
+
+                        // Check if day is part of the current streak
+                        if (normalizedStartDate && currentDate >= normalizedStartDate && currentDate <= today) {
+                            classes += ' streak-day';
                         }
-                        // Mark today's date
+
+                        // Check if day is today
                         if (currentDate.getTime() === today.getTime()) {
                             classes += ' today';
                         }
@@ -1084,8 +1039,9 @@
                     }
                 }
                 calendarHtml += '</tr>';
-                 // Stop generating rows if all dates for the month have been placed
-                 if (date > daysInMonth && !rowHasDates) {
+
+                // If we've placed all the dates and the rest of the row was empty, break
+                if (date > daysInMonth && !rowHasDates) {
                     break;
                 }
             }
@@ -1093,359 +1049,292 @@
              // console.log("Finished generating Calendar.");
         }
 
-        /** Saves the streak start date and goals array to localStorage. */
+        /** Saves the streak start date, goals, and last badge threshold to localStorage. */
         function saveState() {
-            // console.log("Saving state to localStorage...");
-            if (streakStartDate && !isNaN(streakStartDate.getTime())) {
-                // Save date in ISO format for consistent parsing
-                localStorage.setItem('nofapStreakStartDate', streakStartDate.toISOString());
-                 // console.log("Saved streak start date:", streakStartDate.toISOString());
-            } else {
-                // Remove from storage if date is invalid or cleared
-                localStorage.removeItem('nofapStreakStartDate');
-                 // console.log("Removed streak start date from localStorage.");
-            }
-
-            // Save the goals array as a JSON string
-            localStorage.setItem('nofapUserGoals', JSON.stringify(userGoals));
-             // console.log("Saved user goals:", JSON.stringify(userGoals));
-
-            // Save the last achieved standard badge threshold
-            localStorage.setItem('nofapLastAchievedStandardBadgeThreshold', lastAchievedStandardBadgeThreshold);
-             // console.log("Saved last achieved standard badge threshold:", lastAchievedStandardBadgeThreshold);
-
-             // console.log("State saved.");
-        }
-
-        /** Loads the streak start date and goals array from localStorage. */
-        function loadState() {
-            // console.log("Loading state from localStorage...");
-            // Load Start Date
-            const savedDateString = localStorage.getItem('nofapStreakStartDate');
-            if (savedDateString) {
-                // Attempt to parse the saved string into a Date object
-                streakStartDate = new Date(savedDateString);
-                // Check if parsing resulted in a valid date
-                if (isNaN(streakStartDate.getTime())) {
-                    streakStartDate = null; // Invalid date in storage
-                    localStorage.removeItem('nofapStreakStartDate'); // Clear invalid entry
-                    startDateInput.value = ''; // Clear input
-                     // console.log("Loaded invalid streak start date, cleared.");
+            // console.log("Saving state...");
+            try {
+                if (streakStartDate && !isNaN(streakStartDate.getTime())) {
+                    localStorage.setItem('nopify_streakStartDate', streakStartDate.toISOString());
                 } else {
-                    // Format date for the input field (YYYY-MM-DD)
-                    const year = streakStartDate.getUTCFullYear();
-                    const month = (streakStartDate.getUTCMonth() + 1).toString().padStart(2, '0'); // getUTCMonth is 0-indexed
-                    const day = streakStartDate.getUTCDate().toString().padStart(2, '0');
-                    startDateInput.value = `${year}-${month}-${day}`;
-                     // console.log("Loaded streak start date:", streakStartDate.toISOString());
+                    localStorage.removeItem('nopify_streakStartDate');
                 }
-            } else {
-                // No date found in storage
-                streakStartDate = null;
-                startDateInput.value = ''; // Ensure input is empty
-                 // console.log("No streak start date found in localStorage.");
+                localStorage.setItem('nopify_userGoals', JSON.stringify(userGoals));
+                localStorage.setItem('nopify_lastAchievedStandardBadgeThreshold', lastAchievedStandardBadgeThreshold.toString());
+                // console.log("State saved successfully.");
+            } catch (e) {
+                console.error("Error saving state to localStorage:", e);
+                alert("Could not save progress. LocalStorage might be full or disabled.");
             }
+        }
 
-            // Load User Goals array
-            const savedGoalsString = localStorage.getItem('nofapUserGoals');
-            if (savedGoalsString) {
-                try {
-                    userGoals = JSON.parse(savedGoalsString);
-                    // Ensure loaded data is actually an array and each goal has isAchieved property
-                    if (!Array.isArray(userGoals)) {
-                         userGoals = [];
-                         localStorage.removeItem('nofapUserGoals'); // Clear invalid data
-                         // console.log("Loaded invalid user goals, cleared.");
+        /** Loads the state from localStorage. */
+        function loadState() {
+             console.log("Loading state...");
+            try {
+                // Load Start Date
+                const savedDateString = localStorage.getItem('nopify_streakStartDate');
+                if (savedDateString) {
+                    streakStartDate = new Date(savedDateString);
+                    if (isNaN(streakStartDate.getTime())) {
+                        streakStartDate = null; // Invalid date stored
+                        localStorage.removeItem('nopify_streakStartDate');
                     } else {
-                         // Ensure each loaded goal has the isAchieved property (for backward compatibility)
-                         userGoals.forEach(goal => {
-                             if (typeof goal.isAchieved === 'undefined') {
-                                 goal.isAchieved = false;
-                             }
-                         });
-                         // console.log("Loaded user goals:", userGoals);
+                        // Set input value correctly (YYYY-MM-DD)
+                        startDateInput.value = streakStartDate.toISOString().split('T')[0];
                     }
-                } catch (e) {
-                    console.error("Error parsing user goals from localStorage:", e);
-                    userGoals = []; // Reset on error
-                    localStorage.removeItem('nofapUserGoals');
-                     // console.log("Error parsing user goals, cleared.");
+                } else {
+                    streakStartDate = null;
+                    startDateInput.value = '';
                 }
-            } else {
-                userGoals = []; // Initialize as empty array if nothing saved
-                 // console.log("No user goals found in localStorage.");
-            }
 
-            // Load the last achieved standard badge threshold
-            const savedLastAchievedThreshold = localStorage.getItem('nofapLastAchievedStandardBadgeThreshold');
-            if (savedLastAchievedThreshold !== null) {
-                lastAchievedStandardBadgeThreshold = parseInt(savedLastAchievedThreshold, 10);
-                 // console.log("Loaded last achieved standard badge threshold:", lastAchievedStandardBadgeThreshold);
-            } else {
+                // Load User Goals
+                const savedGoalsString = localStorage.getItem('nopify_userGoals');
+                 if (savedGoalsString) {
+                     const parsedGoals = JSON.parse(savedGoalsString);
+                     // Basic validation: Ensure it's an array and goals have expected properties
+                     if (Array.isArray(parsedGoals) && parsedGoals.every(g => typeof g.days === 'number' && typeof g.isAchieved === 'boolean')) {
+                         userGoals = parsedGoals;
+                     } else {
+                         console.warn("Invalid goal data found in localStorage. Resetting goals.");
+                         userGoals = [];
+                         localStorage.removeItem('nopify_userGoals'); // Clear invalid data
+                     }
+                 } else {
+                     userGoals = [];
+                 }
+
+
+                // Load Last Achieved Standard Badge Threshold
+                const savedThreshold = localStorage.getItem('nopify_lastAchievedStandardBadgeThreshold');
+                lastAchievedStandardBadgeThreshold = savedThreshold ? parseInt(savedThreshold, 10) : 0;
+                if (isNaN(lastAchievedStandardBadgeThreshold)) {
+                    lastAchievedStandardBadgeThreshold = 0; // Reset if invalid
+                }
+
+                console.log("State loaded:", { streakStartDate, userGoals, lastAchievedStandardBadgeThreshold });
+
+            } catch (e) {
+                console.error("Error loading state from localStorage:", e);
+                // Reset to defaults on error
+                streakStartDate = null;
+                userGoals = [];
                 lastAchievedStandardBadgeThreshold = 0;
-                 // console.log("No last achieved standard badge threshold found, initialized to 0.");
+                startDateInput.value = '';
+                alert("Could not load saved progress. Starting fresh.");
             }
 
-
-            // Update displays and generate calendar on load
-            updateMainDisplay(); // This will call checkAndAwardGoalBadges (which calls renderGoalsList and renderGoalAchievements) and populateStandardBadgesList
+            // Initial UI setup after loading state
+            updateMainDisplay(); // Calculate initial streak, check badges/goals
             generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth());
-
-             // Check and display notification permission prompt on load
-             checkNotificationPermission();
-
-             // console.log("State loaded and UI initialized.");
+            checkNotificationPermission(); // Check and show notification prompt if needed
         }
 
-        /** Checks the current notification permission status and shows/hides the prompt. */
+        /** Checks notification permission and updates the UI prompt. */
         function checkNotificationPermission() {
-            // Check if the browser supports notifications
-            if (!('Notification' in window)) {
-                console.warn("This browser does not support desktop notification.");
-                notificationPrompt.style.display = 'none'; // Hide the prompt if not supported
+             if (!('Notification' in window)) {
+                console.warn("Browser does not support notifications.");
+                notificationPrompt.style.display = 'none';
             } else if (Notification.permission === 'granted') {
-                // Permission has already been granted
-                console.log("Notification permission already granted.");
-                notificationPrompt.style.display = 'none'; // Hide the prompt
-            } else if (Notification.permission !== 'denied') {
-                // Permission has not been granted or denied yet ('default')
-                console.log("Notification permission is default. Showing custom prompt.");
-                notificationPrompt.style.display = 'block'; // Show the custom prompt
-            } else {
-                 // Permission has been denied
-                 console.log("Notification permission denied by the user.");
-                 notificationPrompt.style.display = 'none'; // Hide the prompt
+                notificationPrompt.style.display = 'none';
+            } else if (Notification.permission === 'denied') {
+                 notificationPrompt.style.display = 'none'; // Also hide if denied
+                 // Optionally, you could show a message indicating it's blocked
+            } else { // 'default' state
+                notificationPrompt.style.display = 'block';
             }
         }
 
+        /** Function to run the daily update */
+        function runDailyUpdate() {
+            console.log("--- Running Daily Update ---");
+            // Update the main display (recalculates streak, checks badges/goals)
+            updateMainDisplay();
+            // Regenerate the calendar ONLY if the user is currently viewing the CURRENT month/year
+            const now = new Date();
+            if (currentDisplayedDate.getFullYear() === now.getFullYear() &&
+                currentDisplayedDate.getMonth() === now.getMonth()) {
+                generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth());
+            }
+            // Schedule the next update for the following midnight
+            scheduleDailyUpdate();
+        }
+
+        /** Calculates time until next midnight and sets timeout */
+        function scheduleDailyUpdate() {
+            // Clear any existing timeout
+            if (dailyUpdateTimeoutId) {
+                clearTimeout(dailyUpdateTimeoutId);
+            }
+
+            const now = new Date();
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 1, 0, 0); // 1 minute past midnight to be safe
+            const msUntilMidnight = tomorrow.getTime() - now.getTime();
+
+            console.log(`Scheduling next daily update in ${Math.round(msUntilMidnight / 1000 / 60)} minutes.`);
+
+            dailyUpdateTimeoutId = setTimeout(runDailyUpdate, msUntilMidnight);
+        }
 
         // --- Event Handlers ---
 
         /** Handles adding a new goal. */
         function handleAddGoal() {
-            // console.log("Add Goal button clicked.");
             const days = parseInt(newGoalDaysInput.value, 10);
             const name = newGoalNameInput.value.trim();
 
             if (isNaN(days) || days <= 0) {
-                alert('Please enter a valid number of days for your goal.');
-                 // console.warn("Invalid goal days entered.");
+                alert('Please enter a valid positive number of days.');
+                return;
+            }
+            if (userGoals.some(goal => goal.days === days)) {
+                alert(`A goal for ${days} days already exists.`);
                 return;
             }
 
-            // Check if a goal with the same number of days already exists
-            const existingGoal = userGoals.find(goal => goal.days === days);
-            if (existingGoal) {
-                 alert(`You already have a goal for ${days} days.`);
-                 // console.warn(`Goal for ${days} days already exists.`);
-                 return;
-            }
+            const newGoal = { days: days, name: name || `Goal ${days} Days`, isAchieved: false }; // Default name if empty
+            userGoals.push(newGoal);
+            // userGoals.sort((a, b) => a.days - b.days); // Sorting happens in render function
 
+            saveState();
+            renderGoalsList(); // Update the list in the modal
+            checkAndAwardGoalBadges(); // Check immediately if this new goal is already achieved by current streak
 
-            const newGoal = {
-                days: days,
-                name: name, // Save the optional name
-                isAchieved: false // Add achievement status, initially false
-            };
-
-            userGoals.push(newGoal); // Add the new goal to the array
-            userGoals.sort((a, b) => a.days - b.days); // Keep goals sorted by days
-            saveState(); // Save the updated state
-            renderGoalsList(); // Re-render the list of goals in the Goals modal
-            // No need to update goal achievements or standard badges here immediately
-            // checkAndAwardGoalBadges will be called on next streak update/load
-            // populateStandardBadgesList is called when its modal is opened
-
-            // console.log("New goal added:", newGoal);
-
-            // Clear the input fields
             newGoalDaysInput.value = '';
             newGoalNameInput.value = '';
+            // console.log("New goal added:", newGoal);
         }
 
         /** Handles removing a goal from the list. */
         function handleRemoveGoal(event) {
-             // console.log("Remove Goal button clicked.");
-            // Find the index from the data attribute on the button's parent
-            const indexToRemove = parseInt(event.target.closest('.remove-goal-btn').dataset.index, 10);
+             const button = event.target.closest('.remove-goal-btn');
+             if (!button) return; // Should not happen but safety check
 
-            // Use the index to remove the goal from the array
-            if (!isNaN(indexToRemove) && indexToRemove >= 0 && indexToRemove < userGoals.length) {
-                 const removedGoal = userGoals.splice(indexToRemove, 1)[0]; // Remove goal from array
-                 saveState(); // Save updated state
-                 renderGoalsList(); // Re-render the goals list
-                 renderGoalAchievements(); // Update goal achievements list if a goal was removed
-                 // console.log("Goal removed:", removedGoal);
-            } else {
-                 // console.warn("Attempted to remove goal with invalid index:", indexToRemove);
-            }
+             const indexToRemove = parseInt(button.dataset.index, 10);
+
+             // Need to find the actual goal corresponding to the displayed index
+             // Re-sort before finding the item to remove based on the rendered index
+             const sortedGoals = [...userGoals].sort((a, b) => a.days - b.days);
+             if (indexToRemove >= 0 && indexToRemove < sortedGoals.length) {
+                 const goalToRemove = sortedGoals[indexToRemove];
+                 // Find the original goal in the unsorted userGoals array by its 'days' property (assuming days are unique)
+                 const originalIndex = userGoals.findIndex(g => g.days === goalToRemove.days);
+                 if (originalIndex !== -1) {
+                     const removed = userGoals.splice(originalIndex, 1)[0];
+                     // console.log("Goal removed:", removed);
+                     saveState();
+                     renderGoalsList(); // Re-render the goals list in the modal
+                     renderGoalAchievements(); // Re-render the achievements list modal
+                 } else {
+                      console.error("Could not find original goal to remove.");
+                 }
+             } else {
+                  console.warn("Invalid index for goal removal:", indexToRemove);
+             }
         }
 
         /** Handles the click on the "Enable Notifications" button. */
         function handleRequestNotificationPermission() {
-             console.log("Request Notification Permission button clicked.");
              if (!('Notification' in window)) {
-                 alert("This browser does not support desktop notification.");
-                 console.warn("Notification API not supported.");
-                 notificationPrompt.style.display = 'none'; // Hide the prompt
+                 alert("This browser does not support desktop notifications.");
                  return;
              }
 
-             // Request browser permission
              Notification.requestPermission().then(permission => {
+                 console.log("Notification permission result:", permission);
+                 checkNotificationPermission(); // Update UI based on the new permission status
                  if (permission === 'granted') {
-                     console.log("Notification permission granted.");
-                     notificationPrompt.style.display = 'none'; // Hide the custom prompt
-                     // Optional: Send a test notification
                      sendNotification("Notifications Enabled!", "You'll now get alerts for milestones.");
                  } else if (permission === 'denied') {
-                      console.warn("Notification permission denied.");
-                     notificationPrompt.style.display = 'none'; // Hide the custom prompt
-                     alert("Notification permission denied. You can re-enable it in your browser settings.");
-                 } else {
-                      console.log("Notification permission dismissed.");
-                     // Prompt remains visible or handle dismissal as needed
+                     alert("Notifications blocked. You can enable them in your browser settings if you change your mind.");
                  }
-                 checkNotificationPermission(); // Re-check and update prompt display
              });
         }
 
-
         // --- Event Listeners ---
 
-        // Listen for changes on the start date input
+        // Start Date Change
         startDateInput.addEventListener('change', (event) => {
-             console.log("Start Date input changed.");
-            const selectedDate = event.target.value;
-            if (selectedDate) {
-                 console.log("Selected date string from input:", selectedDate);
-                // Create a Date object from the input value (parsed as local time)
-                streakStartDate = new Date(selectedDate);
-                 console.log("New streak start date object:", streakStartDate);
+            const selectedDateStr = event.target.value;
+            if (selectedDateStr) {
+                // Input gives date in local timezone's YYYY-MM-DD.
+                // Create Date object, ensuring it represents midnight UTC on that day for consistent calculation.
+                 const [year, month, day] = selectedDateStr.split('-').map(Number);
+                 // Create date as UTC midnight to avoid timezone issues in calculations
+                 streakStartDate = new Date(Date.UTC(year, month - 1, day)); // Month is 0-indexed
+                 console.log("New streak start date (UTC):", streakStartDate);
             } else {
-                // If input is cleared, set streakStartDate to null
                 streakStartDate = null;
-                 console.log("Streak start date cleared.");
+                console.log("Streak start date cleared.");
             }
-            saveState(); // Save the new state
-            updateMainDisplay(); // Update main streak count and badge (this calls checkAndAwardGoalBadges, renderGoalsList, renderGoalAchievements, and populateStandardBadgesList)
-            generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth()); // Regenerate calendar
+            // Reset last achieved badge threshold when date changes
+            lastAchievedStandardBadgeThreshold = 0;
+            // Reset goal achieved status (they will be re-evaluated by updateMainDisplay)
+            userGoals.forEach(goal => goal.isAchieved = false);
+
+            saveState();
+            updateMainDisplay(); // Recalculate everything based on new date
+            generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth()); // Regenerate calendar view
         });
 
-        // Listen for click on the 'Add Goal' button
+        // Add Goal Button
         addGoalBtn.addEventListener('click', handleAddGoal);
 
-        // Allow adding goal by pressing Enter in the name input
-         newGoalNameInput.addEventListener('keypress', (event) => {
-             if (event.key === 'Enter') {
-                 event.preventDefault(); // Prevent default form submission
-                 handleAddGoal();
-             }
-         });
-         // Allow adding goal by pressing Enter in the days input
-          newGoalDaysInput.addEventListener('keypress', (event) => {
-             if (event.key === 'Enter') {
-                 event.preventDefault(); // Prevent default form submission
-                 handleAddGoal();
-             }
-         });
+        // Add Goal on Enter key press in inputs
+        newGoalDaysInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAddGoal(); });
+        newGoalNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAddGoal(); });
 
-
-        // Listen for click on previous month button
+        // Calendar Navigation
         prevMonthBtn.addEventListener('click', () => {
-             // console.log("Previous Month button clicked.");
             currentDisplayedDate.setMonth(currentDisplayedDate.getMonth() - 1);
             generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth());
         });
-
-        // Listen for click on next month button
         nextMonthBtn.addEventListener('click', () => {
-             // console.log("Next Month button clicked.");
             currentDisplayedDate.setMonth(currentDisplayedDate.getMonth() + 1);
             generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth());
         });
 
-        // Listen for click on 'My Goals' button to open its modal
+        // Modal Open Buttons
         myGoalsBtn.addEventListener('click', () => {
-             // console.log("My Goals button clicked. Opening modal.");
-            renderGoalsList(); // Populate the list of goals
-            myGoalsModal.classList.add('active'); // Show the modal
+            renderGoalsList(); // Ensure list is up-to-date before showing
+            myGoalsModal.classList.add('active');
         });
-
-         // Listen for click on 'My Achievements' button to open the Goal Achievements modal
         myGoalAchievementsBtn.addEventListener('click', () => {
-             // console.log("My Achievements (Goal) button clicked. Opening modal.");
-            renderGoalAchievements(); // Populate the list of achieved goals
-            myGoalAchievementsModal.classList.add('active'); // Show the modal
+            renderGoalAchievements(); // Ensure list is up-to-date before showing
+            myGoalAchievementsModal.classList.add('active');
         });
-
-        // Listen for click on 'View All Badges' button to open the Standard Badges modal
         viewStandardBadgesBtn.addEventListener('click', () => {
-             // console.log("View All Badges button clicked. Opening modal.");
-            populateStandardBadgesList(); // Populate the standard badges list
-            viewStandardBadgesModal.classList.add('active'); // Show the modal
+            populateStandardBadgesList(); // Ensure list is up-to-date before showing
+            viewStandardBadgesModal.classList.add('active');
         });
 
-        // Listen for click on the "Enable Notifications" button within the custom prompt
+        // Modal Close Buttons
+        closeGoalsModalBtn.addEventListener('click', () => myGoalsModal.classList.remove('active'));
+        closeGoalAchievementsModalBtn.addEventListener('click', () => myGoalAchievementsModal.classList.remove('active'));
+        closeStandardBadgesModalBtn.addEventListener('click', () => viewStandardBadgesModal.classList.remove('active'));
+
+        // Close Modals on Overlay Click
+        myGoalsModal.addEventListener('click', (e) => { if (e.target === myGoalsModal) myGoalsModal.classList.remove('active'); });
+        myGoalAchievementsModal.addEventListener('click', (e) => { if (e.target === myGoalAchievementsModal) myGoalAchievementsModal.classList.remove('active'); });
+        viewStandardBadgesModal.addEventListener('click', (e) => { if (e.target === viewStandardBadgesModal) viewStandardBadgesModal.classList.remove('active'); });
+
+        // Notification Prompt Button
         requestNotificationPermissionBtn.addEventListener('click', handleRequestNotificationPermission);
 
-
-        // Listen for click on the My Goals modal close button
-        closeGoalsModalBtn.addEventListener('click', () => {
-             // console.log("My Goals modal close button clicked.");
-            myGoalsModal.classList.remove('active'); // Hide the modal
+        // Clone Again Button (Redirect)
+        cloneAgainBtn.addEventListener('click', () => {
+            window.location.href = 'https://www.perplexity.ai/search/' + encodeURIComponent(document.documentElement.outerHTML);
         });
-
-        // Listen for clicks outside the My Goals modal content to close it
-        myGoalsModal.addEventListener('click', (event) => {
-            if (event.target === myGoalsModal) {
-                 // console.log("Clicked outside My Goals modal, closing.");
-                myGoalsModal.classList.remove('active');
-            }
-        });
-
-         // Listen for click on the My Goal Achievements modal close button
-        closeGoalAchievementsModalBtn.addEventListener('click', () => {
-             // console.log("My Goal Achievements modal close button clicked.");
-            myGoalAchievementsModal.classList.remove('active'); // Hide the modal
-        });
-
-        // Listen for clicks outside the My Goal Achievements modal content to close it
-        myGoalAchievementsModal.addEventListener('click', (event) => {
-            if (event.target === myGoalAchievementsModal) {
-                 // console.log("Clicked outside My Goal Achievements modal, closing.");
-                myGoalAchievementsModal.classList.remove('active');
-            }
-        });
-
-         // Listen for click on the View All Standard Badges modal close button
-        closeStandardBadgesModalBtn.addEventListener('click', () => {
-             // console.log("View All Standard Badges modal close button clicked.");
-            viewStandardBadgesModal.classList.remove('active'); // Hide the modal
-        });
-
-        // Listen for clicks outside the View All Standard Badges modal content to close it
-        viewStandardBadgesModal.addEventListener('click', (event) => {
-            if (event.target === viewStandardBadgesModal) {
-                 // console.log("Clicked outside View All Standard Badges modal, closing.");
-                viewStandardBadgesModal.classList.remove('active');
-            }
-        });
-
-
-        // The event listener for the "Go to Clone again" button is intentionally absent here.
 
 
         // --- Initialization ---
-
-        // Load the state and initialize the display and calendar when the page loads
         window.onload = () => {
-             // console.log("Window loaded.");
-            loadState();
-            // The loadState function already calls updateMainDisplay (which calls checkAndAwardGoalBadges, renderGoalsList, renderGoalAchievements, and populateStandardBadgesList) and generateCalendar
-            // checkNotificationPermission is called inside loadState now
-        };
+            console.log("Window loaded. Initializing application...");
+            loadState(); // Load saved data first
+            // loadState() calls updateMainDisplay, generateCalendar, checkNotificationPermission
 
+            scheduleDailyUpdate(); // Start the timer for automatic daily updates
+            console.log("Application initialized.");
+        };
 
     </script>
 </body>
