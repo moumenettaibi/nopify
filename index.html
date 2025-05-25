@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nopify</title> <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Nopify</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="https://api.cloudinary.com/v1_1/pplx/image/download?timestamp=1746370578&public_id=user_uploads%2F1428752%2FJdaGRckSlfmIJxu%2FSCR-20250504-nenx&format=jpg&signature=4cd38a510128955ae7b4be28a1ffbb21ccecb304&api_key=168798331147639" type="image/x-icon">
 	<style>
@@ -36,10 +37,15 @@
             width: 36px; /* Fixed size for circles */
             height: 36px;
             border-radius: 50%; /* Make it circular */
-            cursor: default; /* Default cursor */
-            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+            cursor: pointer; /* Changed to pointer to indicate clickability */
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease; /* Smooth transition */
             user-select: none; /* Prevent text selection */
             font-size: 0.875rem; /* text-sm */
+            margin: 2px; /* Small margin for spacing */
+        }
+        .calendar-day:hover {
+            transform: scale(1.05); /* Slight scale on hover */
+            box-shadow: 0 0 0 2px rgba(253, 186, 116, 0.5); /* Orange ring on hover */
         }
         /* Adjust calendar day size on smaller screens if needed */
         @media (max-width: 360px) {
@@ -64,6 +70,11 @@
         /* Style for days from previous/next months */
         .other-month {
             color: #d1d5db; /* Gray-300 */
+            cursor: default; /* Not clickable for other months */
+        }
+        .other-month:hover {
+            transform: none; /* No scale on hover for other months */
+            box-shadow: none; /* No shadow on hover for other months */
         }
         /* Style for calendar header (day names) */
         .calendar-header th {
@@ -73,20 +84,69 @@
             font-size: 0.75rem; /* text-xs */
         }
         /* Base button styling */
-        button {
+        .btn-base {
             padding: 0.75rem 1.5rem;
-            margin: 0.5rem;
+            /* Remove margin from here, use gap on parent for spacing */
             border-radius: 0.5rem;
-            transition: background-color 0.15s ease-in-out, opacity 0.15s ease-in-out;
+            font-weight: 600; /* Semibold */
+            transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, transform 0.1s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Default shadow */
+            display: inline-flex; /* For icon alignment */
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1; /* Allow buttons to grow and take available space */
+            min-width: 120px; /* Ensure a minimum width for readability */
         }
+        .btn-base:hover {
+            transform: translateY(-2px); /* Slight lift on hover */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+        }
+        .btn-base:active {
+            transform: translateY(0); /* Press down effect */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduced shadow on active */
+        }
+
+        /* Specific button variants */
+        .btn-secondary {
+            @apply bg-gray-200 text-gray-700;
+        }
+        .btn-secondary:hover {
+            @apply bg-gray-300;
+        }
+        .btn-primary {
+            @apply bg-orange-500 text-white;
+        }
+        .btn-primary:hover {
+            @apply bg-orange-600;
+        }
+        .btn-danger {
+            @apply bg-red-500 text-white;
+        }
+        .btn-danger:hover {
+            @apply bg-red-600;
+        }
+        .btn-success {
+            @apply bg-green-500 text-white;
+        }
+        .btn-success:hover {
+            @apply bg-green-600;
+        }
+
+
         /* Styling for date and number inputs */
         input[type="date"], input[type="number"], input[type="text"] { /* Added text input */
             padding: 0.5rem;
             border: 1px solid #d1d5db; /* Gray-300 border */
             border-radius: 0.375rem; /* rounded-md */
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-            /* focus:border-orange-500 focus:ring-orange-500; /* Focus styles handled by Tailwind classes in HTML */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
+        input[type="date"]:focus, input[type="number"]:focus, input[type="text"]:focus {
+            border-color: #f97316; /* Orange-500 on focus */
+            box-shadow: 0 0 0 3px rgba(253, 186, 116, 0.5); /* Orange-300 ring on focus */
+            outline: none; /* Remove default outline */
+        }
+
         /* Styling for the main badge icon */
         .main-badge-icon {
             font-size: 1.75rem; /* Slightly larger */
@@ -470,19 +530,95 @@
              margin-bottom: 0.75rem;
          }
           #requestNotificationPermissionBtn {
-              background-color: #34d399; /* Green-400 */
-              color: white;
-              font-weight: 600;
-              padding: 0.5rem 1rem;
-              border: none;
-              border-radius: 0.375rem;
-              cursor: pointer;
-              transition: background-color 0.15s ease-in-out;
+              @apply btn-base btn-success; /* Use new button style */
           }
-           #requestNotificationPermissionBtn:hover {
-               background-color: #10b981; /* Green-500 */
-           }
 
+
+        /* New: Relapse Day Style */
+        .relapse-day {
+            background-color: #fecaca; /* Red-200 */
+            color: #dc2626; /* Red-600 */
+            font-weight: bold;
+            border: 2px solid #ef4444; /* Red-500 border */
+        }
+
+        /* New: LLM Relapse Insight Style */
+        #llmRelapseInsight {
+            font-style: italic;
+            color: #4b5563; /* Gray-600 */
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            padding: 0.5rem;
+            border-top: 1px dashed #d1d5db;
+            border-bottom: 1px dashed #d1d5db;
+        }
+
+        /* Confirmation Modal Specific Styles */
+        #confirmationModal .modal-content {
+            max-width: 350px; /* Slightly smaller for confirmation */
+        }
+        #confirmationModal .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+        }
+        #confirmationModal .modal-buttons button {
+            flex-grow: 1; /* Make buttons fill space */
+            margin: 0 0.5rem; /* Space between buttons */
+        }
+
+        /* Import/Settings Modal Specific Styles */
+        #importModal .modal-content, #settingsModal .modal-content {
+            max-width: 450px;
+        }
+        #importModal .file-input-wrapper, #settingsModal .file-input-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+            text-align: center;
+        }
+        #importModal .file-input-wrapper:hover, #settingsModal .file-input-wrapper:hover {
+            border-color: #fb923c;
+            background-color: #fff7ed;
+        }
+        #importModal .file-input-wrapper input[type="file"], #settingsModal .file-input-wrapper input[type="file"] {
+            display: none; /* Hide actual file input */
+        }
+        #importModal .file-input-wrapper .file-input-text, #settingsModal .file-input-wrapper .file-input-text {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+        #importModal .file-input-wrapper .file-input-icon, #settingsModal .file-input-wrapper .file-input-icon {
+            font-size: 2rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+        #importModal .import-status, #settingsModal .import-status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+        #importModal .import-error, #settingsModal .import-error {
+            color: #ef4444;
+            font-weight: 500;
+        }
+        #importModal .import-success, #settingsModal .import-success {
+            color: #22c55e;
+            font-weight: 500;
+        }
+
+        /* Settings Modal specific layout */
+        #settingsModal .modal-content div {
+            margin-bottom: 1rem; /* Spacing between sections */
+        }
+        #settingsModal .modal-content button {
+            margin-top: 0.5rem; /* Spacing below buttons within settings */
+        }
 
     </style>
 </head>
@@ -509,15 +645,21 @@
             <p id="streakMessage" class="text-sm text-gray-500 mt-1"></p>
         </div>
 
-        <div class="mt-6 text-center flex flex-col sm:flex-row justify-center items-center gap-2">
-             <button id="myGoalsBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg w-full sm:w-auto">
+        <div class="mt-6 text-center flex flex-wrap justify-center items-center gap-2 sm:gap-4">
+             <button id="myGoalsBtn" class="btn-base btn-secondary w-full sm:w-auto">
                 <i class="fas fa-bullseye mr-2"></i>My Goals
             </button>
-             <button id="myGoalAchievementsBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg w-full sm:w-auto">
+             <button id="myGoalAchievementsBtn" class="btn-base btn-secondary w-full sm:w-auto">
                 <i class="fas fa-award mr-2"></i>My Achievements
             </button>
-             <button id="viewStandardBadgesBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg w-full sm:w-auto">
+             <button id="viewStandardBadgesBtn" class="btn-base btn-secondary w-full sm:w-auto">
                 <i class="fas fa-trophy mr-2"></i>View All Badges
+            </button>
+            <button id="relapseBtn" class="btn-base btn-danger w-full sm:w-auto">
+                <i class="fas fa-skull-crossbones mr-2"></i>Relapse
+            </button>
+            <button id="settingsBtn" class="btn-base btn-secondary w-full sm:w-auto">
+                <i class="fas fa-cog mr-2"></i>Settings
             </button>
         </div>
 
@@ -551,14 +693,12 @@
                     </tr>
                 </thead>
                 <tbody id="calendarBody" class="text-center">
-                    <!-- Calendar days will be generated here -->
-                </tbody>
+                    </tbody>
             </table>
         </div>
 
     </div>
 
-    <!-- My Goals Modal -->
     <div id="myGoalsModal" class="modal-overlay">
         <div class="modal-content">
             <button id="closeGoalsModalBtn" aria-label="Close modal" class="modal-close-btn">
@@ -572,18 +712,16 @@
                     <input type="number" id="newGoalDays" name="newGoalDays" min="1" placeholder="Days" class="block w-full sm:w-auto max-w-[100px] text-center">
                     <input type="text" id="newGoalName" name="newGoalName" placeholder="Optional Name" class="block w-full sm:flex-grow">
                 </div>
-                <button id="addGoalBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold w-full sm:w-auto"> Add Goal
+                <button id="addGoalBtn" class="btn-base btn-primary w-full sm:w-auto"> Add Goal
                 </button>
             </div>
 
             <div id="goalsListContainer">
                 <p class="text-center text-gray-500 text-sm italic p-4">No goals set yet. Add one above!</p>
-                <!-- Goal items will be rendered here -->
-            </div>
+                </div>
         </div>
     </div>
 
-    <!-- My Goal Achievements Modal -->
     <div id="myGoalAchievementsModal" class="modal-overlay">
         <div class="modal-content">
             <button id="closeGoalAchievementsModalBtn" aria-label="Close modal" class="modal-close-btn">
@@ -592,30 +730,61 @@
             <h2 class="text-xl font-semibold text-center text-gray-800 mb-4">My Goal Achievements</h2>
             <div id="goalAchievementsListContainer">
                  <p class="text-center text-gray-500 text-sm italic p-4">No goals achieved yet.</p>
-                 <!-- Achieved goal items will be rendered here -->
-            </div>
+                 </div>
         </div>
     </div>
 
-    <!-- View All Standard Badges Modal -->
-     <div id="viewStandardBadgesModal" class="modal-overlay">
+    <div id="viewStandardBadgesModal" class="modal-overlay">
         <div class="modal-content">
             <button id="closeStandardBadgesModalBtn" aria-label="Close modal" class="modal-close-btn">
                 <i class="fas fa-times"></i>
             </button>
             <h2 class="text-xl font-semibold text-center text-gray-800 mb-4">All Standard Badges</h2>
             <div id="standardBadgesListContainer">
-                 <!-- Standard badge items will be rendered here -->
-            </div>
+                 </div>
         </div>
     </div>
 
-    <!-- Celebration Modal -->
     <div id="celebrationModal" class="modal-overlay">
         <div id="celebrationContent">
             <i id="celebrationIcon" class="fas fa-star"></i>
             <div id="celebrationMessage">Congratulations!</div>
             <div id="celebrationDetails">You achieved a milestone!</div>
+            <div id="llmRelapseInsight" class="text-sm text-gray-700 mt-2 hidden"></div>
+        </div>
+    </div>
+
+    <div id="confirmationModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="confirmationMessage" class="text-lg font-semibold text-center text-gray-800 mb-4">Are you sure?</h3>
+            <div class="modal-buttons">
+                <button id="confirmYesBtn" class="btn-base btn-danger">Yes</button>
+                <button id="confirmNoBtn" class="btn-base btn-secondary">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeSettingsModalBtn" aria-label="Close modal" class="modal-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-xl font-semibold text-center text-gray-800 mb-4">Settings</h2>
+
+            <div class="flex flex-col items-center mb-4">
+                <h3 class="text-lg font-medium text-gray-700 mb-2">Data Management</h3>
+                <button id="exportDataBtn" class="btn-base btn-secondary w-full mb-2">
+                    <i class="fas fa-download mr-2"></i>Export Data
+                </button>
+                <button id="importDataBtn" class="btn-base btn-secondary w-full">
+                    <i class="fas fa-upload mr-2"></i>Import Data
+                </button>
+            </div>
+
+            <input type="file" id="importFileInput" accept=".json" class="hidden">
+            <div id="importStatus" class="import-status text-center mt-4 hidden"></div>
+            <button id="performImportBtn" class="btn-base btn-primary w-full mt-4 hidden">Perform Import</button>
+
         </div>
     </div>
 
@@ -629,14 +798,15 @@
         const currentMonthYearEl = document.getElementById('currentMonthYear');
         const prevMonthBtn = document.getElementById('prevMonth');
         const nextMonthBtn = document.getElementById('nextMonth');
-        const cloneAgainBtn = document.getElementById('cloneAgainBtn');
         const badgeIconEl = document.getElementById('badgeIcon');
         const badgeNameEl = document.getElementById('badgeName');
+        const relapseBtn = document.getElementById('relapseBtn');
 
         // Buttons to open modals
         const myGoalsBtn = document.getElementById('myGoalsBtn');
         const myGoalAchievementsBtn = document.getElementById('myGoalAchievementsBtn');
         const viewStandardBadgesBtn = document.getElementById('viewStandardBadgesBtn');
+        const settingsBtn = document.getElementById('settingsBtn'); // New: Settings Button
 
         // Notification Permission Prompt Elements
         const notificationPrompt = document.getElementById('notificationPrompt');
@@ -647,11 +817,14 @@
         const myGoalAchievementsModal = document.getElementById('myGoalAchievementsModal');
         const viewStandardBadgesModal = document.getElementById('viewStandardBadgesModal');
         const celebrationModal = document.getElementById('celebrationModal');
+        const confirmationModal = document.getElementById('confirmationModal');
+        const settingsModal = document.getElementById('settingsModal'); // New: Settings Modal
 
         // Close buttons for modals
         const closeGoalsModalBtn = myGoalsModal.querySelector('.modal-close-btn');
         const closeGoalAchievementsModalBtn = myGoalAchievementsModal.querySelector('.modal-close-btn');
         const closeStandardBadgesModalBtn = viewStandardBadgesModal.querySelector('.modal-close-btn');
+        const closeSettingsModalBtn = settingsModal.querySelector('.modal-close-btn'); // New: Close Settings Modal Button
 
         // Elements within My Goals Modal
         const newGoalDaysInput = document.getElementById('newGoalDays');
@@ -669,21 +842,38 @@
         const celebrationIconEl = document.getElementById('celebrationIcon');
         const celebrationMessageEl = document.getElementById('celebrationMessage');
         const celebrationDetailsEl = document.getElementById('celebrationDetails');
+        const llmRelapseInsightEl = document.getElementById('llmRelapseInsight');
+
+        // Elements within Confirmation Modal
+        const confirmationMessageEl = document.getElementById('confirmationMessage');
+        const confirmYesBtn = document.getElementById('confirmYesBtn');
+        const confirmNoBtn = document.getElementById('confirmNoBtn');
+
+        // Elements within Settings Modal (moved from main and importModal)
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        const importDataBtn = document.getElementById('importDataBtn');
+        const importFileInput = document.getElementById('importFileInput');
+        const importStatusEl = document.getElementById('importStatus');
+        const performImportBtn = document.getElementById('performImportBtn');
 
 
         // --- State ---
-        let currentDisplayedDate = new Date(); // For calendar view
+        let currentDisplayedDate = new Date();
         let streakStartDate = null;
         let currentStreakDays = 0;
         let userGoals = [];
         let lastAchievedStandardBadgeThreshold = 0;
-        let dailyUpdateTimeoutId = null; // Store the timeout ID for the daily update
+        let dailyUpdateTimeoutId = null;
+        let relapseDates = [];
+        let pendingConfirmationCallback = null;
+        let importedData = null;
+
 
         // --- Constants ---
         const MS_PER_DAY = 1000 * 60 * 60 * 24;
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-        // --- Badge Definitions --- (Sorted by threshold for simplicity in getCurrentBadge)
+        // --- Badge Definitions ---
         const badges = [
              { name: 'Clown', threshold: 0, icon: 'fa-face-sad-tear' },
              { name: 'Noob', threshold: 1, icon: 'fa-baby' },
@@ -695,38 +885,43 @@
              { name: 'Absolute Chad', threshold: 60, icon: 'fa-gem' },
              { name: 'Giga Chad', threshold: 120, icon: 'fa-crown' },
              { name: 'Absolute Giga Chad', threshold: 365, icon: 'fa-meteor' }
-        ].sort((a, b) => b.threshold - a.threshold); // Sort descending by threshold
+        ].sort((a, b) => b.threshold - a.threshold);
 
         // --- Functions ---
 
         /** Calculates the difference in days between two dates (UTC). */
         function dateDiffInDays(date1, date2) {
-            // console.log("dateDiffInDays called with:", date1, date2);
             const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
             const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
             const diff = Math.floor((utc2 - utc1) / MS_PER_DAY);
-            // console.log("dateDiffInDays result:", diff);
             return diff;
+        }
+
+        /** Normalizes a date to midnight UTC for consistent comparison. */
+        function normalizeDateToUTC(date) {
+            return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+        }
+
+        /** Checks if a date is a relapse date. */
+        function isRelapseDate(date) {
+            const normalizedDate = normalizeDateToUTC(date);
+            return relapseDates.some(relapseIso => normalizeDateToUTC(new Date(relapseIso)).getTime() === normalizedDate.getTime());
         }
 
         /** Determines the *highest* current badge achieved based on days. */
         function getCurrentBadge(days) {
-             // Assumes badges array is sorted descending by threshold
              for (const badge of badges) {
                  if (days >= badge.threshold) {
                      return badge;
                  }
              }
-             // Should theoretically not be reached if Clown (threshold 0) is present
-             return badges[badges.length - 1]; // Fallback to lowest threshold badge
+             return badges[badges.length - 1];
         }
 
         /** Populates the standard badges list within the View All Standard Badges modal. */
         function populateStandardBadgesList() {
-            standardBadgesListContainer.innerHTML = ''; // Clear existing list
-            // console.log("Populating Standard Badges List...");
+            standardBadgesListContainer.innerHTML = '';
 
-            // Use the globally defined badges array, sort ascending for display
             const sortedBadgesForDisplay = [...badges].sort((a, b) => a.threshold - b.threshold);
 
             if (sortedBadgesForDisplay.length === 0) {
@@ -736,8 +931,8 @@
 
             sortedBadgesForDisplay.forEach(badge => {
                 const listItem = document.createElement('div');
-                listItem.className = 'list-item'; // Use generic list-item class
-                const isAchieved = currentStreakDays >= badge.threshold && currentStreakDays >= 0; // Also check streak is valid
+                listItem.className = 'list-item';
+                const isAchieved = currentStreakDays >= badge.threshold && currentStreakDays >= 0;
 
                 if (isAchieved) {
                     listItem.classList.add('achieved');
@@ -752,20 +947,17 @@
                 `;
                 standardBadgesListContainer.appendChild(listItem);
             });
-             // console.log("Finished populating Standard Badges List.");
         }
 
          /** Renders the list of user-defined goals in the My Goals modal. */
         function renderGoalsList() {
-             goalsListContainer.innerHTML = ''; // Clear existing list
-             // console.log("Rendering Goals List...");
+             goalsListContainer.innerHTML = '';
 
             if (userGoals.length === 0) {
                  goalsListContainer.innerHTML = '<p class="text-center text-gray-500 text-sm italic p-4">No goals set yet. Add one above!</p>';
                  return;
             }
 
-             // Sort goals by days for consistent display order
              userGoals.sort((a, b) => a.days - b.days);
 
             userGoals.forEach((goal, index) => {
@@ -784,7 +976,7 @@
                          <i class="item-icon fas fa-bullseye"></i>
                          <div class="goal-list-item-details">
                              <div class="goal-list-item-name">${goal.name ? goal.name : `Goal ${goal.days} Days`} (${goal.days} Days)</div>
-                             <div class="goal-list-item-progress-text">${isGoalAchieved ? 'Achieved!' : `Progress: ${Math.max(0, currentStreakDays)} / ${goal.days} days`}</div>
+                             <div class="list-item-progress-text">${isGoalAchieved ? 'Achieved!' : `Progress: ${Math.max(0, currentStreakDays)} / ${goal.days} days`}</div>
                          </div>
                          <button class="remove-goal-btn" data-index="${index}" aria-label="Remove goal">
                              <i class="fas fa-times-circle"></i>
@@ -797,19 +989,15 @@
                 goalsListContainer.appendChild(goalItem);
             });
 
-             // Add event listeners to remove buttons AFTER rendering
              goalsListContainer.querySelectorAll('.remove-goal-btn').forEach(button => {
                  button.addEventListener('click', handleRemoveGoal);
              });
-             // console.log("Finished rendering Goals List.");
         }
 
         /** Renders the list of achieved user-defined goals in the My Goal Achievements modal. */
         function renderGoalAchievements() {
-            goalAchievementsListContainer.innerHTML = ''; // Clear existing list
-            // console.log("Rendering Goal Achievements...");
+            goalAchievementsListContainer.innerHTML = '';
 
-            // Filter achieved goals from the *current* state of userGoals
             const achievedGoals = userGoals.filter(goal => goal.isAchieved);
 
             if (achievedGoals.length === 0) {
@@ -817,12 +1005,11 @@
                  return;
             }
 
-            // Sort achieved goals by days
             achievedGoals.sort((a, b) => a.days - b.days);
 
             achievedGoals.forEach(goal => {
                  const achievementItem = document.createElement('div');
-                 achievementItem.className = 'list-item goal-achievement-item achieved'; // Always achieved style
+                 achievementItem.className = 'list-item goal-achievement-item achieved';
                  achievementItem.innerHTML = `
                      <i class="item-icon fas fa-award"></i>
                      <div class="list-item-details">
@@ -832,281 +1019,290 @@
                  `;
                  goalAchievementsListContainer.appendChild(achievementItem);
             });
-             // console.log("Finished rendering Goal Achievements.");
         }
 
         /** Displays a celebration message pop-up. */
-        function showCelebration(message, details, iconClass = 'fa-star') {
+        function showCelebration(message, details, iconClass = 'fa-star', llmInsight = '') {
             celebrationMessageEl.textContent = message;
             celebrationDetailsEl.textContent = details;
-            celebrationIconEl.className = `fas ${iconClass} text-4xl mb-4`; // Apply classes directly
+            celebrationIconEl.className = `fas ${iconClass} text-4xl mb-4`;
 
-            celebrationModal.classList.add('active'); // Show the modal
+            if (llmInsight) {
+                llmRelapseInsightEl.textContent = llmInsight;
+                llmRelapseInsightEl.classList.remove('hidden');
+            } else {
+                llmRelapseInsightEl.classList.add('hidden');
+                llmRelapseInsightEl.textContent = '';
+            }
 
-            // Hide the modal after a few seconds
+            celebrationModal.classList.add('active');
+
             setTimeout(() => {
                 celebrationModal.classList.remove('active');
-            }, 4000); // Display for 4 seconds
+            }, 4000);
         }
 
         /** Sends a browser notification if permission is granted. */
-        function sendNotification(title, body, icon = 'https://api.cloudinary.com/v1_1/pplx/image/download?timestamp=1746370578&public_id=user_uploads%2F1428752%2FJdaGRckSlfmIJxu%2FSCR-20250504-nenx&format=jpg&signature=4cd38a510128955ae7b4be28a1ffbb21ccecb304&api_key=168798331147639') { // Default to app icon
+        function sendNotification(title, body, icon = 'https://api.cloudinary.com/v1_1/pplx/image/download?timestamp=1746370578&public_id=user_uploads%2F1428752%2FJdaGRckSlfmIJxu%2FSCR-20250504-nenx&format=jpg&signature=4cd38a510128955ae7b4be28a1ffbb21ccecb304&api_key=168798331147639') {
             if ('Notification' in window && Notification.permission === 'granted') {
                 new Notification(title, { body: body, icon: icon });
-                // console.log("Browser notification sent:", title);
-            } else {
-                // console.log("Browser notification not sent (permission: " + Notification.permission + ")");
             }
         }
 
+        /** Fetches a motivational message from the Gemini API. */
+        async function getMotivationalMessage() {
+            llmRelapseInsightEl.classList.remove('hidden');
+            llmRelapseInsightEl.textContent = 'Generating a motivational message...';
+            try {
+                let chatHistory = [];
+                const prompt = "Generate a very short, encouraging, and empathetic message for someone who has experienced a relapse in their self-improvement journey. Focus on resilience and moving forward. Keep it under 20 words.";
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "AIzaSyCKcbHo3lbOzPL5k7hI1IsU5D8XtLkFODA";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    llmRelapseInsightEl.textContent = text;
+                } else {
+                    llmRelapseInsightEl.textContent = 'Failed to get insight. Please try again.';
+                    console.error("Gemini API response structure unexpected:", result);
+                }
+            } catch (error) {
+                llmRelapseInsightEl.textContent = 'Error generating message.';
+                console.error("Error calling Gemini API:", error);
+            }
+        }
 
         /** Checks user goals against the current streak and updates their achievement status. */
         function checkAndAwardGoalBadges() {
-            // console.log("Checking and Awarding Goal Badges...");
             let stateChanged = false;
-            let newlyAchievedGoal = null; // Track if a goal was *just* achieved
+            let newlyAchievedGoal = null;
 
             userGoals.forEach(goal => {
                 if (!goal.isAchieved && currentStreakDays >= goal.days && currentStreakDays >= 0) {
-                    // console.log(`Goal achieved: ${goal.name} (${goal.days} days)`);
                     goal.isAchieved = true;
                     stateChanged = true;
-                    newlyAchievedGoal = goal; // Store the newly achieved goal
+                    newlyAchievedGoal = goal;
                 }
             });
 
-            // If a goal was newly achieved, trigger celebration and notification
             if (newlyAchievedGoal) {
                  const goalName = newlyAchievedGoal.name ? newlyAchievedGoal.name : `${newlyAchievedGoal.days} Days Goal`;
                  showCelebration('Goal Achieved!', goalName, 'fa-award');
                  sendNotification('Milestone Achieved!', `You reached your goal: ${goalName}!`);
             }
 
-            // Always re-render goal lists after checking to update progress bars and states
             renderGoalsList();
-            renderGoalAchievements(); // Also update the achievements list modal content
+            renderGoalAchievements();
 
             if (stateChanged) {
-                // console.log("Goal state changed, saving.");
-                saveState(); // Save if any goals were newly marked as achieved
-            } else {
-                 // console.log("No new goals achieved.");
+                saveState();
             }
         }
 
-
         /** Updates the main streak count and current badge display. */
         function updateMainDisplay() {
-            // console.log("Updating Main Display...");
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Normalize today's date
+            const today = normalizeDateToUTC(new Date());
 
-            let previousStreakDays = currentStreakDays; // Store previous value
-            let newlyAchievedStandardBadge = null; // Track if a badge was *just* achieved
+            let previousStreakDays = currentStreakDays;
+            let newlyAchievedStandardBadge = null;
 
-            currentStreakDays = 0; // Reset before recalculation
-            let currentBadge = getCurrentBadge(0); // Default
+            currentStreakDays = 0;
+            let currentBadge = getCurrentBadge(0);
 
             if (streakStartDate) {
-                const normalizedStartDate = new Date(streakStartDate);
-                normalizedStartDate.setHours(0, 0, 0, 0);
+                const normalizedStartDate = normalizeDateToUTC(streakStartDate);
 
                 if (normalizedStartDate > today) {
-                    // Start date is in the future - invalid state
-                    currentStreakDays = -1; // Use -1 to indicate invalid
+                    currentStreakDays = -1;
                     currentBadge = { name: 'Invalid Date', icon: 'fa-exclamation-triangle' };
                     streakMessageEl.textContent = 'Start date cannot be in the future.';
-                     badgeIconEl.style.color = '#ef4444'; // Red for invalid
-                     console.log("Invalid start date (future).");
+                    badgeIconEl.style.color = '#ef4444';
                 } else {
-                    // Valid start date
                     currentStreakDays = dateDiffInDays(normalizedStartDate, today);
                     currentBadge = getCurrentBadge(currentStreakDays);
-                    streakMessageEl.textContent = ''; // Clear any previous message
-                     badgeIconEl.style.color = '#f97316'; // Default orange for valid
-                     console.log(`Streak calculated: ${currentStreakDays} days.`);
+                    streakMessageEl.textContent = '';
+                    badgeIconEl.style.color = '#f97316';
 
-                    // Check for new standard badge achievement ONLY if the streak increased
                     if (currentStreakDays > previousStreakDays && currentBadge.threshold > lastAchievedStandardBadgeThreshold && currentBadge.threshold <= currentStreakDays) {
-                         console.log(`New Standard Badge Achieved: ${currentBadge.name} (${currentBadge.threshold} days)`);
                          newlyAchievedStandardBadge = currentBadge;
-                         lastAchievedStandardBadgeThreshold = currentBadge.threshold; // Update threshold
-                         saveState(); // Save the new threshold immediately
+                         lastAchievedStandardBadgeThreshold = currentBadge.threshold;
+                         saveState();
                     }
                 }
             } else {
-                // No start date set
                 currentStreakDays = 0;
                 currentBadge = { name: 'Set start date', icon: 'fa-question-circle' };
                 streakMessageEl.textContent = '';
-                 badgeIconEl.style.color = '#fb923c'; // Default orange
-                lastAchievedStandardBadgeThreshold = 0; // Reset threshold if no date
-                saveState(); // Save the reset threshold
-                console.log("No start date set.");
+                badgeIconEl.style.color = '#fb923c';
+                lastAchievedStandardBadgeThreshold = 0;
+                saveState();
             }
 
-            // Update main streak count display
-            streakCountEl.textContent = Math.max(0, currentStreakDays); // Show 0 for invalid dates too
+            streakCountEl.textContent = Math.max(0, currentStreakDays);
 
-            // Update website title
             if (currentStreakDays > 0) {
                 document.title = `${currentStreakDays} Days Streak - Nopify`;
             } else if (currentStreakDays === 0 && streakStartDate !== null) {
                  document.title = `0 Day Streak - Nopify`;
             } else {
-                 document.title = `Nopify`; // Default or invalid
+                 document.title = `Nopify`;
             }
 
-            // Update main badge display
             badgeNameEl.textContent = currentBadge.name;
-            badgeIconEl.className = `main-badge-icon fas ${currentBadge.icon}`; // Apply classes
+            badgeIconEl.className = `main-badge-icon fas ${currentBadge.icon}`;
 
-            // After updating streak, check for newly achieved GOALS
-            checkAndAwardGoalBadges(); // This calls its own rendering functions
+            checkAndAwardGoalBadges();
 
-            // If a standard badge was newly achieved, trigger celebration/notification AFTER goal check
             if (newlyAchievedStandardBadge) {
                  showCelebration('New Badge!', newlyAchievedStandardBadge.name, newlyAchievedStandardBadge.icon);
                  sendNotification('New Badge Unlocked!', `You earned the ${newlyAchievedStandardBadge.name} badge for ${newlyAchievedStandardBadge.threshold} days!`);
             }
 
-
-            // Re-populate the standard badges list (needed if a new one was achieved)
             populateStandardBadgesList();
-
-             // console.log("Finished Updating Main Display.");
         }
 
 
         /** Generates and displays the calendar for a given month and year. */
         function generateCalendar(year, month) {
-            calendarBody.innerHTML = ''; // Clear previous calendar
-            // console.log(`Generating Calendar for ${year}-${month + 1}...`);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Normalize today for comparison
+            calendarBody.innerHTML = '';
+            const today = normalizeDateToUTC(new Date());
 
             currentMonthYearEl.textContent = `${monthNames[month]} ${year}`;
 
             const firstDayOfMonth = new Date(year, month, 1);
-            let startingDay = firstDayOfMonth.getDay(); // 0 (Sun) to 6 (Sat)
-            startingDay = (startingDay === 0) ? 6 : startingDay - 1; // Adjust to 0 (Mon) to 6 (Sun)
+            let startingDay = firstDayOfMonth.getDay();
+            startingDay = (startingDay === 0) ? 6 : startingDay - 1;
 
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
             let date = 1;
             let calendarHtml = '';
 
-            // Calculate the date range for the streak (if applicable)
             let normalizedStartDate = null;
             if (streakStartDate) {
-                normalizedStartDate = new Date(streakStartDate);
-                normalizedStartDate.setHours(0, 0, 0, 0);
+                normalizedStartDate = normalizeDateToUTC(streakStartDate);
             }
 
-            for (let i = 0; i < 6; i++) { // Max 6 rows needed
+            for (let i = 0; i < 6; i++) {
                 calendarHtml += '<tr>';
-                let rowHasDates = false; // Optimization to stop early if month ends
+                let rowHasDates = false;
 
-                for (let j = 0; j < 7; j++) { // 7 days a week (Mon-Sun)
+                for (let j = 0; j < 7; j++) {
                     if ((i === 0 && j < startingDay) || date > daysInMonth) {
-                        // Empty cell before month start or after month end
                         calendarHtml += '<td><div class="calendar-day other-month"></div></td>';
                     } else {
-                        // Cell for a valid day in the month
                         rowHasDates = true;
-                        const currentDate = new Date(year, month, date);
-                        currentDate.setHours(0, 0, 0, 0); // Normalize for comparison
+                        const currentDate = normalizeDateToUTC(new Date(year, month, date));
 
                         let classes = 'calendar-day';
 
-                        // Check if day is part of the current streak
                         if (normalizedStartDate && currentDate >= normalizedStartDate && currentDate <= today) {
                             classes += ' streak-day';
                         }
 
-                        // Check if day is today
+                        if (isRelapseDate(currentDate)) {
+                            classes = 'calendar-day relapse-day';
+                        }
+
                         if (currentDate.getTime() === today.getTime()) {
                             classes += ' today';
                         }
 
-                        calendarHtml += `<td><div class="${classes}">${date}</div></td>`;
+                        // Add data attribute for easy date retrieval on click
+                        calendarHtml += `<td><div class="${classes}" data-full-date="${currentDate.toISOString()}">${date}</div></td>`;
                         date++;
                     }
                 }
                 calendarHtml += '</tr>';
 
-                // If we've placed all the dates and the rest of the row was empty, break
                 if (date > daysInMonth && !rowHasDates) {
                     break;
                 }
             }
             calendarBody.innerHTML = calendarHtml;
-             // console.log("Finished generating Calendar.");
+
+            // Add event listeners to each clickable day
+            calendarBody.querySelectorAll('.calendar-day:not(.other-month)').forEach(dayEl => {
+                dayEl.addEventListener('click', handleCalendarDayClick);
+            });
         }
 
-        /** Saves the streak start date, goals, and last badge threshold to localStorage. */
+        /** Saves the streak start date, goals, last badge threshold, and relapse dates to localStorage. */
         function saveState() {
-            // console.log("Saving state...");
             try {
-                if (streakStartDate && !isNaN(streakStartDate.getTime())) {
-                    localStorage.setItem('nopify_streakStartDate', streakStartDate.toISOString());
-                } else {
-                    localStorage.removeItem('nopify_streakStartDate');
-                }
-                localStorage.setItem('nopify_userGoals', JSON.stringify(userGoals));
-                localStorage.setItem('nopify_lastAchievedStandardBadgeThreshold', lastAchievedStandardBadgeThreshold.toString());
-                // console.log("State saved successfully.");
+                const appState = {
+                    streakStartDate: streakStartDate ? streakStartDate.toISOString() : null,
+                    userGoals: userGoals,
+                    lastAchievedStandardBadgeThreshold: lastAchievedStandardBadgeThreshold,
+                    relapseDates: relapseDates
+                };
+                localStorage.setItem('nopify_appState', JSON.stringify(appState));
             } catch (e) {
                 console.error("Error saving state to localStorage:", e);
-                alert("Could not save progress. LocalStorage might be full or disabled.");
+                showCelebration('Save Error', 'Could not save progress. LocalStorage might be full or disabled.', 'fa-exclamation-triangle');
             }
         }
 
         /** Loads the state from localStorage. */
         function loadState() {
-             console.log("Loading state...");
             try {
-                // Load Start Date
-                const savedDateString = localStorage.getItem('nopify_streakStartDate');
-                if (savedDateString) {
-                    streakStartDate = new Date(savedDateString);
-                    if (isNaN(streakStartDate.getTime())) {
-                        streakStartDate = null; // Invalid date stored
-                        localStorage.removeItem('nopify_streakStartDate');
+                const savedStateString = localStorage.getItem('nopify_appState');
+                if (savedStateString) {
+                    const appState = JSON.parse(savedStateString);
+
+                    // Basic validation for loaded data
+                    if (appState.streakStartDate) {
+                        const date = new Date(appState.streakStartDate);
+                        if (!isNaN(date.getTime())) {
+                            streakStartDate = date;
+                            startDateInput.value = streakStartDate.toISOString().split('T')[0];
+                        } else {
+                            console.warn("Invalid streakStartDate in saved state.");
+                            streakStartDate = null;
+                            startDateInput.value = '';
+                        }
                     } else {
-                        // Set input value correctly (YYYY-MM-DD)
-                        startDateInput.value = streakStartDate.toISOString().split('T')[0];
+                        streakStartDate = null;
+                        startDateInput.value = '';
+                    }
+
+                    if (Array.isArray(appState.userGoals) && appState.userGoals.every(g => typeof g.days === 'number' && typeof g.isAchieved === 'boolean')) {
+                        userGoals = appState.userGoals;
+                    } else {
+                        console.warn("Invalid userGoals in saved state. Resetting.");
+                        userGoals = [];
+                    }
+
+                    if (typeof appState.lastAchievedStandardBadgeThreshold === 'number') {
+                        lastAchievedStandardBadgeThreshold = appState.lastAchievedStandardBadgeThreshold;
+                    } else {
+                        console.warn("Invalid lastAchievedStandardBadgeThreshold in saved state. Resetting.");
+                        lastAchievedStandardBadgeThreshold = 0;
+                    }
+
+                    if (Array.isArray(appState.relapseDates) && appState.relapseDates.every(d => typeof d === 'string')) {
+                        relapseDates = appState.relapseDates;
+                    } else {
+                        console.warn("Invalid relapseDates in saved state. Resetting.");
+                        relapseDates = [];
                     }
                 } else {
+                    // No saved state found, initialize defaults
                     streakStartDate = null;
+                    userGoals = [];
+                    lastAchievedStandardBadgeThreshold = 0;
+                    relapseDates = [];
                     startDateInput.value = '';
                 }
-
-                // Load User Goals
-                const savedGoalsString = localStorage.getItem('nopify_userGoals');
-                 if (savedGoalsString) {
-                     const parsedGoals = JSON.parse(savedGoalsString);
-                     // Basic validation: Ensure it's an array and goals have expected properties
-                     if (Array.isArray(parsedGoals) && parsedGoals.every(g => typeof g.days === 'number' && typeof g.isAchieved === 'boolean')) {
-                         userGoals = parsedGoals;
-                     } else {
-                         console.warn("Invalid goal data found in localStorage. Resetting goals.");
-                         userGoals = [];
-                         localStorage.removeItem('nopify_userGoals'); // Clear invalid data
-                     }
-                 } else {
-                     userGoals = [];
-                 }
-
-
-                // Load Last Achieved Standard Badge Threshold
-                const savedThreshold = localStorage.getItem('nopify_lastAchievedStandardBadgeThreshold');
-                lastAchievedStandardBadgeThreshold = savedThreshold ? parseInt(savedThreshold, 10) : 0;
-                if (isNaN(lastAchievedStandardBadgeThreshold)) {
-                    lastAchievedStandardBadgeThreshold = 0; // Reset if invalid
-                }
-
-                console.log("State loaded:", { streakStartDate, userGoals, lastAchievedStandardBadgeThreshold });
 
             } catch (e) {
                 console.error("Error loading state from localStorage:", e);
@@ -1114,60 +1310,191 @@
                 streakStartDate = null;
                 userGoals = [];
                 lastAchievedStandardBadgeThreshold = 0;
+                relapseDates = [];
                 startDateInput.value = '';
-                alert("Could not load saved progress. Starting fresh.");
+                showCelebration('Load Error', 'Could not load saved progress. Starting fresh.', 'fa-exclamation-triangle');
             }
 
-            // Initial UI setup after loading state
-            updateMainDisplay(); // Calculate initial streak, check badges/goals
+            updateMainDisplay();
             generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth());
-            checkNotificationPermission(); // Check and show notification prompt if needed
+            checkNotificationPermission();
         }
 
         /** Checks notification permission and updates the UI prompt. */
         function checkNotificationPermission() {
              if (!('Notification' in window)) {
-                console.warn("Browser does not support notifications.");
                 notificationPrompt.style.display = 'none';
             } else if (Notification.permission === 'granted') {
                 notificationPrompt.style.display = 'none';
             } else if (Notification.permission === 'denied') {
-                 notificationPrompt.style.display = 'none'; // Also hide if denied
-                 // Optionally, you could show a message indicating it's blocked
-            } else { // 'default' state
+                 notificationPrompt.style.display = 'none';
+            } else {
                 notificationPrompt.style.display = 'block';
             }
         }
 
         /** Function to run the daily update */
         function runDailyUpdate() {
-            console.log("--- Running Daily Update ---");
-            // Update the main display (recalculates streak, checks badges/goals)
             updateMainDisplay();
-            // Regenerate the calendar ONLY if the user is currently viewing the CURRENT month/year
             const now = new Date();
             if (currentDisplayedDate.getFullYear() === now.getFullYear() &&
                 currentDisplayedDate.getMonth() === now.getMonth()) {
                 generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth());
             }
-            // Schedule the next update for the following midnight
             scheduleDailyUpdate();
         }
 
         /** Calculates time until next midnight and sets timeout */
         function scheduleDailyUpdate() {
-            // Clear any existing timeout
             if (dailyUpdateTimeoutId) {
                 clearTimeout(dailyUpdateTimeoutId);
             }
 
             const now = new Date();
-            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 1, 0, 0); // 1 minute past midnight to be safe
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 1, 0, 0);
             const msUntilMidnight = tomorrow.getTime() - now.getTime();
 
-            console.log(`Scheduling next daily update in ${Math.round(msUntilMidnight / 1000 / 60)} minutes.`);
-
             dailyUpdateTimeoutId = setTimeout(runDailyUpdate, msUntilMidnight);
+        }
+
+        /** Shows the custom confirmation modal. */
+        function showConfirmation(message, onConfirm, onCancel) {
+            confirmationMessageEl.textContent = message;
+            pendingConfirmationCallback = { onConfirm, onCancel };
+            confirmationModal.classList.add('active');
+        }
+
+        /** Hides the custom confirmation modal. */
+        function hideConfirmation() {
+            confirmationModal.classList.remove('active');
+            pendingConfirmationCallback = null;
+        }
+
+        /** Handles the confirmation for adding a relapse. */
+        function confirmAndAddRelapse(date) {
+            const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            showConfirmation(`Mark ${formattedDate} as a relapse?`, () => {
+                addRelapseDate(date);
+                hideConfirmation();
+            }, () => {
+                hideConfirmation();
+            });
+        }
+
+        /** Adds a relapse date to the state and updates UI. */
+        async function addRelapseDate(date) {
+            const today = normalizeDateToUTC(new Date());
+            const normalizedDate = normalizeDateToUTC(date);
+            const dateIso = normalizedDate.toISOString();
+
+            if (normalizedDate > today) {
+                showCelebration('Cannot Mark Relapse', 'You cannot mark a relapse in the future.', 'fa-calendar-times');
+                return;
+            }
+            if (!streakStartDate || normalizedDate < normalizeDateToUTC(streakStartDate)) {
+                showCelebration('Cannot Mark Relapse', 'Relapse date cannot be before your streak start date.', 'fa-calendar-times');
+                return;
+            }
+            if (relapseDates.includes(dateIso)) {
+                showCelebration('Already Marked', `${normalizedDate.toLocaleDateString('en-US')} is already marked as a relapse.`, 'fa-info-circle');
+                return;
+            }
+
+            relapseDates.push(dateIso);
+            saveState();
+            generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth());
+
+            showCelebration('Relapse Recorded', 'Keep going, every day is a new chance!', 'fa-skull-crossbones');
+            sendNotification('Relapse Recorded', 'Don\'t give up! Your streak continues.');
+            await getMotivationalMessage();
+        }
+
+        /** Exports current app data to a JSON file. */
+        function exportData() {
+            const appState = {
+                streakStartDate: streakStartDate ? streakStartDate.toISOString() : null,
+                userGoals: userGoals,
+                lastAchievedStandardBadgeThreshold: lastAchievedStandardBadgeThreshold,
+                relapseDates: relapseDates
+            };
+            const dataStr = JSON.stringify(appState, null, 2); // Pretty print JSON
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nopify_data_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a); // Required for Firefox
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Clean up
+            showCelebration('Data Exported!', 'Your Nopify data has been downloaded.', 'fa-file-export');
+            settingsModal.classList.remove('active'); // Close settings modal after export
+        }
+
+        /** Handles the import of data from a JSON file. */
+        function importData() {
+            importStatusEl.textContent = ''; // Clear previous status
+            performImportBtn.classList.add('hidden'); // Hide import button initially
+            importFileInput.value = ''; // Clear selected file
+            importFileInput.click(); // Programmatically click the hidden file input
+        }
+
+        /** Validates and applies imported data. */
+        function applyImportedData(data) {
+            // Basic validation of the imported data structure
+            if (typeof data !== 'object' || data === null ||
+                !('streakStartDate' in data) || !('userGoals' in data) ||
+                !('lastAchievedStandardBadgeThreshold' in data) || !('relapseDates' in data)) {
+                importStatusEl.textContent = 'Invalid data structure in file.';
+                importStatusEl.classList.remove('import-success');
+                importStatusEl.classList.add('import-error');
+                return false;
+            }
+
+            // More detailed validation for each property
+            let isValid = true;
+            if (data.streakStartDate !== null) {
+                const date = new Date(data.streakStartDate);
+                if (isNaN(date.getTime())) {
+                    isValid = false;
+                    importStatusEl.textContent = 'Invalid streak start date format.';
+                }
+            }
+            if (!Array.isArray(data.userGoals) || !data.userGoals.every(g => typeof g.days === 'number' && typeof g.isAchieved === 'boolean')) {
+                isValid = false;
+                importStatusEl.textContent = 'Invalid user goals format.';
+            }
+            if (typeof data.lastAchievedStandardBadgeThreshold !== 'number') {
+                isValid = false;
+                importStatusEl.textContent = 'Invalid badge threshold format.';
+            }
+            if (!Array.isArray(data.relapseDates) || !data.relapseDates.every(d => typeof d === 'string')) {
+                isValid = false;
+                importStatusEl.textContent = 'Invalid relapse dates format.';
+            }
+
+            if (!isValid) {
+                importStatusEl.classList.remove('import-success');
+                importStatusEl.classList.add('import-error');
+                return false;
+            }
+
+            // If validation passes, update the state
+            streakStartDate = data.streakStartDate ? new Date(data.streakStartDate) : null;
+            userGoals = data.userGoals;
+            lastAchievedStandardBadgeThreshold = data.lastAchievedStandardBadgeThreshold;
+            relapseDates = data.relapseDates;
+
+            saveState(); // Save the newly imported state
+            updateMainDisplay(); // Refresh main UI
+            generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth()); // Refresh calendar
+
+            importStatusEl.textContent = 'Data imported successfully!';
+            importStatusEl.classList.remove('import-error');
+            importStatusEl.classList.add('import-success');
+            performImportBtn.classList.add('hidden'); // Hide button after successful import
+            importedData = null; // Clear imported data
+            return true;
         }
 
         // --- Event Handlers ---
@@ -1178,72 +1505,127 @@
             const name = newGoalNameInput.value.trim();
 
             if (isNaN(days) || days <= 0) {
-                alert('Please enter a valid positive number of days.');
+                showCelebration('Invalid Input', 'Please enter a valid positive number of days for your goal.', 'fa-exclamation-circle');
                 return;
             }
             if (userGoals.some(goal => goal.days === days)) {
-                alert(`A goal for ${days} days already exists.`);
+                showCelebration('Goal Exists', `A goal for ${days} days already exists.`, 'fa-info-circle');
                 return;
             }
 
-            const newGoal = { days: days, name: name || `Goal ${days} Days`, isAchieved: false }; // Default name if empty
+            const newGoal = { days: days, name: name || `Goal ${days} Days`, isAchieved: false };
             userGoals.push(newGoal);
-            // userGoals.sort((a, b) => a.days - b.days); // Sorting happens in render function
 
             saveState();
-            renderGoalsList(); // Update the list in the modal
-            checkAndAwardGoalBadges(); // Check immediately if this new goal is already achieved by current streak
+            renderGoalsList();
+            checkAndAwardGoalBadges();
 
             newGoalDaysInput.value = '';
             newGoalNameInput.value = '';
-            // console.log("New goal added:", newGoal);
         }
 
         /** Handles removing a goal from the list. */
         function handleRemoveGoal(event) {
              const button = event.target.closest('.remove-goal-btn');
-             if (!button) return; // Should not happen but safety check
+             if (!button) return;
 
              const indexToRemove = parseInt(button.dataset.index, 10);
 
-             // Need to find the actual goal corresponding to the displayed index
-             // Re-sort before finding the item to remove based on the rendered index
              const sortedGoals = [...userGoals].sort((a, b) => a.days - b.days);
              if (indexToRemove >= 0 && indexToRemove < sortedGoals.length) {
                  const goalToRemove = sortedGoals[indexToRemove];
-                 // Find the original goal in the unsorted userGoals array by its 'days' property (assuming days are unique)
                  const originalIndex = userGoals.findIndex(g => g.days === goalToRemove.days);
                  if (originalIndex !== -1) {
-                     const removed = userGoals.splice(originalIndex, 1)[0];
-                     // console.log("Goal removed:", removed);
+                     userGoals.splice(originalIndex, 1);
                      saveState();
-                     renderGoalsList(); // Re-render the goals list in the modal
-                     renderGoalAchievements(); // Re-render the achievements list modal
-                 } else {
-                      console.error("Could not find original goal to remove.");
+                     renderGoalsList();
+                     renderGoalAchievements();
                  }
-             } else {
-                  console.warn("Invalid index for goal removal:", indexToRemove);
              }
         }
 
         /** Handles the click on the "Enable Notifications" button. */
         function handleRequestNotificationPermission() {
              if (!('Notification' in window)) {
-                 alert("This browser does not support desktop notifications.");
+                 showCelebration('Browser Not Supported', 'This browser does not support desktop notifications.', 'fa-times-circle');
                  return;
              }
 
              Notification.requestPermission().then(permission => {
-                 console.log("Notification permission result:", permission);
-                 checkNotificationPermission(); // Update UI based on the new permission status
+                 checkNotificationPermission();
                  if (permission === 'granted') {
                      sendNotification("Notifications Enabled!", "You'll now get alerts for milestones.");
                  } else if (permission === 'denied') {
-                     alert("Notifications blocked. You can enable them in your browser settings if you change your mind.");
+                     showCelebration('Notifications Blocked', 'Notifications are blocked. You can enable them in your browser settings.', 'fa-ban');
                  }
              });
         }
+
+        /** Handles the click on a calendar day. */
+        function handleCalendarDayClick(event) {
+            const dayEl = event.target.closest('.calendar-day');
+            if (dayEl && !dayEl.classList.contains('other-month')) {
+                const fullDateIso = dayEl.dataset.fullDate;
+                const clickedDate = new Date(fullDateIso);
+                confirmAndAddRelapse(clickedDate);
+            }
+        }
+
+        /** Handles file selection for import. */
+        function handleImportFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                importStatusEl.textContent = '';
+                performImportBtn.classList.add('hidden');
+                importedData = null;
+                return;
+            }
+
+            if (file.type !== 'application/json') {
+                importStatusEl.textContent = 'Please select a JSON file.';
+                importStatusEl.classList.remove('import-success');
+                importStatusEl.classList.add('import-error');
+                performImportBtn.classList.add('hidden');
+                importedData = null;
+                return;
+            }
+
+            importStatusEl.textContent = `Selected file: ${file.name}`;
+            importStatusEl.classList.remove('import-error', 'import-success');
+            performImportBtn.classList.remove('hidden'); // Show the "Perform Import" button
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    importedData = JSON.parse(e.target.result);
+                    importStatusEl.textContent = `File loaded: ${file.name}. Click "Perform Import" to apply.`;
+                    importStatusEl.classList.remove('import-error');
+                    importStatusEl.classList.add('import-success');
+                } catch (error) {
+                    importStatusEl.textContent = 'Error parsing JSON file. Invalid format.';
+                    importStatusEl.classList.remove('import-success');
+                    importStatusEl.classList.add('import-error');
+                    performImportBtn.classList.add('hidden');
+                    importedData = null;
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        /** Handles the actual import process after file is selected and parsed. */
+        function handlePerformImport() {
+            if (importedData) {
+                const success = applyImportedData(importedData);
+                if (success) {
+                    setTimeout(() => settingsModal.classList.remove('active'), 1500); // Close settings modal after successful import
+                }
+            } else {
+                importStatusEl.textContent = 'No data loaded to import.';
+                importStatusEl.classList.remove('import-success');
+                importStatusEl.classList.add('import-error');
+            }
+        }
+
 
         // --- Event Listeners ---
 
@@ -1251,24 +1633,17 @@
         startDateInput.addEventListener('change', (event) => {
             const selectedDateStr = event.target.value;
             if (selectedDateStr) {
-                // Input gives date in local timezone's YYYY-MM-DD.
-                // Create Date object, ensuring it represents midnight UTC on that day for consistent calculation.
                  const [year, month, day] = selectedDateStr.split('-').map(Number);
-                 // Create date as UTC midnight to avoid timezone issues in calculations
-                 streakStartDate = new Date(Date.UTC(year, month - 1, day)); // Month is 0-indexed
-                 console.log("New streak start date (UTC):", streakStartDate);
+                 streakStartDate = new Date(Date.UTC(year, month - 1, day));
             } else {
                 streakStartDate = null;
-                console.log("Streak start date cleared.");
             }
-            // Reset last achieved badge threshold when date changes
             lastAchievedStandardBadgeThreshold = 0;
-            // Reset goal achieved status (they will be re-evaluated by updateMainDisplay)
             userGoals.forEach(goal => goal.isAchieved = false);
-
+            relapseDates = [];
             saveState();
-            updateMainDisplay(); // Recalculate everything based on new date
-            generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth()); // Regenerate calendar view
+            updateMainDisplay();
+            generateCalendar(currentDisplayedDate.getFullYear(), currentDisplayedDate.getMonth());
         });
 
         // Add Goal Button
@@ -1290,42 +1665,70 @@
 
         // Modal Open Buttons
         myGoalsBtn.addEventListener('click', () => {
-            renderGoalsList(); // Ensure list is up-to-date before showing
+            renderGoalsList();
             myGoalsModal.classList.add('active');
         });
         myGoalAchievementsBtn.addEventListener('click', () => {
-            renderGoalAchievements(); // Ensure list is up-to-date before showing
+            renderGoalAchievements();
             myGoalAchievementsModal.classList.add('active');
         });
         viewStandardBadgesBtn.addEventListener('click', () => {
-            populateStandardBadgesList(); // Ensure list is up-to-date before showing
+            populateStandardBadgesList();
             viewStandardBadgesModal.classList.add('active');
+        });
+        // New: Settings Button opens settings modal
+        settingsBtn.addEventListener('click', () => {
+            settingsModal.classList.add('active');
+            importStatusEl.textContent = ''; // Clear status when opening
+            performImportBtn.classList.add('hidden'); // Hide button
+            importFileInput.value = ''; // Clear file input
         });
 
         // Modal Close Buttons
         closeGoalsModalBtn.addEventListener('click', () => myGoalsModal.classList.remove('active'));
         closeGoalAchievementsModalBtn.addEventListener('click', () => myGoalAchievementsModal.classList.remove('active'));
         closeStandardBadgesModalBtn.addEventListener('click', () => viewStandardBadgesModal.classList.remove('active'));
+        closeSettingsModalBtn.addEventListener('click', () => settingsModal.classList.remove('active')); // Close settings modal
 
         // Close Modals on Overlay Click
         myGoalsModal.addEventListener('click', (e) => { if (e.target === myGoalsModal) myGoalsModal.classList.remove('active'); });
         myGoalAchievementsModal.addEventListener('click', (e) => { if (e.target === myGoalAchievementsModal) myGoalAchievementsModal.classList.remove('active'); });
         viewStandardBadgesModal.addEventListener('click', (e) => { if (e.target === viewStandardBadgesModal) viewStandardBadgesModal.classList.remove('active'); });
+        celebrationModal.addEventListener('click', (e) => { if (e.target === celebrationModal) celebrationModal.classList.remove('active'); });
+        confirmationModal.addEventListener('click', (e) => { if (e.target === confirmationModal) { if (pendingConfirmationCallback && typeof pendingConfirmationCallback.onCancel === 'function') { pendingConfirmationCallback.onCancel(); } } });
+        settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) { settingsModal.classList.remove('active'); } }); // Close settings modal on overlay click
 
         // Notification Prompt Button
         requestNotificationPermissionBtn.addEventListener('click', handleRequestNotificationPermission);
 
-        
+        // Relapse Button Event Listener
+        relapseBtn.addEventListener('click', () => confirmAndAddRelapse(new Date()));
+
+        // Confirmation Modal Buttons
+        confirmYesBtn.addEventListener('click', () => {
+            if (pendingConfirmationCallback && typeof pendingConfirmationCallback.onConfirm === 'function') {
+                pendingConfirmationCallback.onConfirm();
+            }
+        });
+        confirmNoBtn.addEventListener('click', () => {
+            if (pendingConfirmationCallback && typeof pendingConfirmationCallback.onCancel === 'function') {
+                pendingConfirmationCallback.onCancel();
+            }
+        });
+
+        // Export and Import Buttons (now inside settings modal)
+        exportDataBtn.addEventListener('click', exportData);
+        importDataBtn.addEventListener('click', importData); // This now triggers the hidden file input
+
+        // Import File Input and Perform Import Button Listeners
+        importFileInput.addEventListener('change', handleImportFileSelect);
+        performImportBtn.addEventListener('click', handlePerformImport);
 
 
         // --- Initialization ---
         window.onload = () => {
-            console.log("Window loaded. Initializing application...");
-            loadState(); // Load saved data first
-            // loadState() calls updateMainDisplay, generateCalendar, checkNotificationPermission
-
-            scheduleDailyUpdate(); // Start the timer for automatic daily updates
-            console.log("Application initialized.");
+            loadState();
+            scheduleDailyUpdate();
         };
 
     </script>
